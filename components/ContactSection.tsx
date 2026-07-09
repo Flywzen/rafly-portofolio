@@ -1,7 +1,9 @@
 import { MessageCircle, Mail, Github, Linkedin, ArrowRight } from 'lucide-react'
 import { WHATSAPP_URL, GITHUB_URL, LINKEDIN_URL, EMAIL } from '@/data/socialLinks'
+import { CONTACT_CTA_LABEL } from '@/components/Navbar'
+import { Reveal, RevealGroup, RevealItem } from '@/components/Reveal'
 
-interface ContactCard {
+interface ContactLink {
   icon: React.ElementType
   label: string
   description: string
@@ -9,7 +11,7 @@ interface ContactCard {
   ariaLabel: string
 }
 
-const contactCards: ContactCard[] = [
+const contactLinks: ContactLink[] = [
   {
     icon: Mail,
     label: 'Email',
@@ -40,70 +42,70 @@ export default function ContactSection() {
       aria-labelledby="contact-heading"
       className="section-pad"
     >
-      <div className="max-w-4xl mx-auto px-5 sm:px-8 text-center">
+      <RevealGroup className="max-w-2xl mx-auto px-5 sm:px-8 text-center" stagger={0.1}>
 
         {/* Header */}
-        <div className="mb-12 reveal">
-          <p className="section-label flex justify-center">Kontak</p>
+        <RevealItem className="mb-10">
           <h2
             id="contact-heading"
-            className="font-display font-bold text-3xl sm:text-4xl md:text-5xl text-tx-1 leading-tight mb-5"
+            className="font-semibold text-3xl sm:text-4xl md:text-5xl text-zinc-50 leading-tight mb-5 tracking-tight"
           >
-            Website Anda,{' '}
-            <span className="text-gold-gradient">mulai dari percakapan.</span>
+            Website Anda, mulai dari percakapan.
           </h2>
-          <p className="text-tx-2 text-base max-w-xl mx-auto leading-relaxed">
-            Tidak perlu brief yang panjang. Ceritakan bisnis Anda, saya akan tanyakan hal yang
-            perlu ditanyakan. Estimasi gratis, tanpa komitmen.
+          <p className="text-zinc-400 text-base max-w-xl mx-auto leading-relaxed">
+            Saya belum punya daftar klien untuk dipamerkan, karena saya baru mulai menerima
+            proyek profesional. Yang saya tawarkan: proses yang jelas, komunikasi cepat, dan
+            hasil yang bisa Anda cek sendiri di bagian Proyek. Ceritakan kebutuhan Anda, saya
+            akan tanyakan hal yang perlu ditanyakan.
           </p>
-        </div>
+        </RevealItem>
 
-        {/* Primary CTA */}
-        <div className="mb-4 reveal reveal-d1">
+        {/* Primary CTA — same label as nav and hero, one intent, one name */}
+        <RevealItem className="mb-3">
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary text-base py-4 px-8 inline-flex animate-pulse-gold"
-            aria-label="Hubungi Rafly via WhatsApp untuk diskusi website"
+            className="btn-primary text-base py-3.5 px-7 inline-flex"
+            aria-label={`${CONTACT_CTA_LABEL} via WhatsApp`}
           >
             <MessageCircle size={18} aria-hidden="true" />
-            Hubungi via WhatsApp
+            {CONTACT_CTA_LABEL}
             <ArrowRight size={16} aria-hidden="true" />
           </a>
-        </div>
+        </RevealItem>
 
-        <p className="text-tx-3 text-xs mb-14 reveal reveal-d2">
-          Respons dalam 1–3 jam di jam aktif (08.00–21.00 WIB)
-        </p>
+        <RevealItem>
+          <p className="text-zinc-500 text-xs mb-14">
+            Respons dalam 1-3 jam di jam aktif (08.00-21.00 WIB)
+          </p>
+        </RevealItem>
 
-        {/* Secondary cards */}
-        <div
-          className="grid sm:grid-cols-3 gap-4 reveal reveal-d3"
-          aria-label="Kontak alternatif"
+        {/* Secondary links — flat, not boxed */}
+        <RevealItem
+          className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/[0.08] border-t border-b border-white/[0.08]"
         >
-          {contactCards.map(({ icon: Icon, label, description, href, ariaLabel }) => (
-            <a
-              key={label}
-              href={href}
-              target={href.startsWith('mailto') ? undefined : '_blank'}
-              rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-              className="card p-5 flex flex-col items-center gap-2.5 text-center group"
-              aria-label={ariaLabel}
-            >
-              <div
-                className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center group-hover:bg-gold/20 transition-colors duration-200"
-                aria-hidden="true"
+          <div className="flex flex-col sm:flex-row w-full" aria-label="Kontak alternatif">
+            {contactLinks.map(({ icon: Icon, label, description, href, ariaLabel }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('mailto') ? undefined : '_blank'}
+                rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                className="flex-1 flex items-center justify-center gap-2.5 py-5 px-4 hover:bg-white/[0.02] transition-colors duration-150"
+                aria-label={ariaLabel}
               >
-                <Icon size={17} className="text-gold" />
-              </div>
-              <p className="font-display font-semibold text-tx-1 text-sm">{label}</p>
-              <p className="text-tx-3 text-xs break-all">{description}</p>
-            </a>
-          ))}
-        </div>
+                <Icon size={16} className="text-zinc-500 shrink-0" aria-hidden="true" />
+                <span className="text-left">
+                  <span className="block font-medium text-zinc-50 text-sm">{label}</span>
+                  <span className="block text-zinc-500 text-xs">{description}</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </RevealItem>
 
-      </div>
+      </RevealGroup>
     </section>
   )
 }

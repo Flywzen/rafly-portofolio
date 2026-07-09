@@ -11,7 +11,7 @@ export const projects: Project[] = [
     problem:
       'Pesan WhatsApp terlalu singkat untuk momen ulang tahun ayah yang ke-50. Keluarga tersebar di berbagai kota dan tidak bisa berkumpul.',
     goal:
-      'Website personal yang bisa diakses kapan saja — berisi gallery keluarga, surat terbuka, dan penghitung usia real-time.',
+      'Website personal yang bisa diakses kapan saja, berisi gallery keluarga, surat terbuka, dan penghitung usia real-time.',
     role: 'Solo developer: konsep, desain, development, deployment.',
     features: [
       'Real-time age counter (hari, jam, menit, detik)',
@@ -26,7 +26,6 @@ export const projects: Project[] = [
       'Live di hari H. Keluarga dari tiga kota mengakses dan meninggalkan pesan di momen yang sama.',
     demoUrl: 'https://your-demo.vercel.app',
     githubUrl: 'https://github.com/USERNAME/birthday-dad',
-    colorAccent: 'gold',
     // imageUrl: '/images/birthday-dad.png',  ← uncomment + tambah file setelah screenshot
   },
   {
@@ -40,7 +39,7 @@ export const projects: Project[] = [
       'Desa lokasi KKN tidak punya media digital yang bisa diakses warga dan pihak luar untuk mengenal profil desa, berita, dan layanan.',
     goal:
       'Website informasi desa yang mudah dikelola, cepat di koneksi lemah, dan bisa jadi bukti kontribusi KKN.',
-    role: 'Solo developer — dari wireframe sampai deployment.',
+    role: 'Solo developer, dari wireframe sampai deployment.',
     features: [
       'Profil desa: sejarah, visi-misi, struktur pemerintahan',
       'Berita dan pengumuman',
@@ -55,7 +54,6 @@ export const projects: Project[] = [
       'Website live, digunakan sebagai referensi laporan KKN, dan diserahkan ke kepala desa.',
     demoUrl: 'https://your-demo.vercel.app',
     githubUrl: 'https://github.com/USERNAME/desa-kkn',
-    colorAccent: 'teal',
     // imageUrl: '/images/desa-kkn.png',
   },
   {
@@ -75,7 +73,7 @@ export const projects: Project[] = [
       'Catatan keuangan: pemasukan, pengeluaran, saldo',
       'Tracker rutinitas dengan streak counter',
       'Milestone board untuk tujuan besar',
-      'Data tersimpan lokal — tanpa akun, tanpa server',
+      'Data tersimpan lokal, tanpa akun, tanpa server',
       'Dark mode secara default',
     ],
     challenges:
@@ -84,7 +82,6 @@ export const projects: Project[] = [
       'MVP live dan digunakan sendiri 30+ hari. Menjadi demo kemampuan full frontend development.',
     demoUrl: 'https://your-demo.vercel.app',
     githubUrl: 'https://github.com/USERNAME/kiroku',
-    colorAccent: 'teal',
     // imageUrl: '/images/kiroku.png',
   },
   {
@@ -97,7 +94,7 @@ export const projects: Project[] = [
     problem:
       'UMKM lokal mengandalkan Instagram untuk berjualan tapi tidak punya halaman yang bisa menampilkan produk, testimoni, dan CTA secara terstruktur.',
     goal:
-      'Landing page satu halaman yang membantu konversi dari pengunjung menjadi pembeli — cepat, mobile-first, mudah di-update.',
+      'Landing page satu halaman yang membantu konversi dari pengunjung menjadi pembeli, cepat, mobile-first, mudah di-update.',
     role: 'Web developer + konsultan konten dasar.',
     features: [
       'Hero section dengan foto produk dan CTA WhatsApp',
@@ -112,7 +109,6 @@ export const projects: Project[] = [
       'Demo live digunakan sebagai referensi saat menawarkan jasa ke UMKM lain. Respons positif dari 3 calon klien.',
     demoUrl: 'https://your-demo.vercel.app',
     githubUrl: 'https://github.com/USERNAME/umkm-landing',
-    colorAccent: 'gold',
     // imageUrl: '/images/umkm-landing.png',
   },
 ]

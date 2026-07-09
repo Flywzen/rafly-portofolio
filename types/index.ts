@@ -15,7 +15,6 @@ export interface Project {
   result: string
   demoUrl: string
   githubUrl: string
-  colorAccent: 'gold' | 'teal'
   /** Optional: path to screenshot in /public/images/, e.g. '/images/kiroku.png' */
   imageUrl?: string
 }
@@ -27,20 +26,9 @@ export interface Service {
   price: string
   priceNote?: string
   duration: string
-  icon: 'layout' | 'building' | 'user' | 'wrench'
   featured: boolean
   deliverables: string[]
   note?: string
-}
-
-export interface TechItem {
-  name: string
-  level: 'solid' | 'learning'
-}
-
-export interface TechCategory {
-  category: string
-  items: TechItem[]
 }
 
 export interface SocialLink {
@@ -61,14 +49,4 @@ export interface LearningPhase {
   title: string
   status: 'done' | 'active' | 'upcoming'
   items: string[]
-}
-
-export interface Testimonial {
-  name: string
-  role: string
-  company?: string
-  body: string
-  rating: number
-  /** Set to true until real testimonials exist */
-  placeholder?: boolean
 }

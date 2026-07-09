@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  // Disable next's attempt to fetch/optimize external font stylesheets at build time
-  optimizeFonts: false,
+  // Required for the `geist` package below Next.js 15 (App Router).
+  transpilePackages: ['geist'],
 }
 
 export default config

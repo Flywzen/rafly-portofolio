@@ -1,5 +1,5 @@
 
-**Muhammad Rafly Yahya Ramadhan** — web developer & UI/UX.
+**Muhammad Rafly Yahya Ramadhan**, web developer & UI/UX.
 
 **Live:** [rafly.vercel.app](https://rafly.vercel.app) *(update setelah deploy)*
 
@@ -12,8 +12,9 @@
 | Framework    | Next.js 14 (App Router)                 |
 | Language     | TypeScript (strict)                     |
 | Styling      | Tailwind CSS v3                         |
+| Motion       | framer-motion (scroll-reveal + expand/collapse only) |
 | Icons        | Lucide React                            |
-| Fonts        | Space Grotesk + Inter (next/font)       |
+| Fonts        | Geist Sans + Geist Mono (next/font)     |
 | Deployment   | Vercel                                  |
 | Source       | GitHub                                  |
 
@@ -31,27 +32,26 @@ rafly-portfolio/
 │   └── globals.css         # Tailwind + design system utilities
 │
 ├── components/
-│   ├── RevealInit.tsx      # Client — IntersectionObserver scroll reveal
-│   ├── Navbar.tsx          # Client — sticky nav, mobile menu
-│   ├── HeroSection.tsx     # Server — headline, CTA, stats, marquee
-│   ├── AboutSection.tsx    # Server — bio, highlights
-│   ├── ServicesSection.tsx # Server — 4 paket jasa + pricing
-│   ├── ProjectCard.tsx     # Client — expandable case study card
-│   ├── FeaturedProjects.tsx# Server — grid wrapper untuk ProjectCard
-│   ├── TechStackSection.tsx# Server — skill grid per kategori
-│   ├── CybersecuritySection.tsx # Server — roadmap + write-ups
-│   ├── TestimonialsSection.tsx  # Server — placeholder testimoni
-│   ├── ContactSection.tsx  # Server — WhatsApp CTA + kontak
-│   └── Footer.tsx          # Server — nav, sosial, copyright
+│   ├── Reveal.tsx             # Client, framer-motion scroll-reveal primitives (Reveal, RevealGroup, RevealItem)
+│   ├── Navbar.tsx            # Client, sticky nav, mobile menu
+│   ├── HeroSection.tsx       # Server, headline, CTA
+│   ├── AboutSection.tsx      # Server, bio prose (single column, no duplication)
+│   ├── ServicesSection.tsx   # Server, 4 paket jasa + pricing
+│   ├── ProjectCard.tsx       # Client, expandable case study card
+│   ├── CaseStudyFields.tsx   # Shared row definitions (used by ProjectCard + CaseStudySection)
+│   ├── CaseStudySection.tsx  # Server, standalone full case study view
+│   ├── FeaturedProjects.tsx  # Server, grid wrapper untuk ProjectCard
+│   ├── CybersecuritySection.tsx # Server, dev/sec bridge + write-ups + roadmap
+│   ├── ContactSection.tsx    # Server, WhatsApp CTA + kontak
+│   └── Footer.tsx            # Server, nav, sosial, copyright
 │
 ├── data/
 │   ├── projects.ts         # Typed project data (Project[])
 │   ├── services.ts         # Typed service packages (Service[])
-│   ├── techStack.ts        # Typed tech categories + marquee items
 │   └── socialLinks.ts      # Typed social links + URL constants
 │
 ├── lib/
-│   └── utils.ts            # cn() — merge class names
+│   └── utils.ts            # cn(), merge class names
 │
 ├── types/
 │   └── index.ts            # Shared TypeScript interfaces
@@ -61,7 +61,7 @@ rafly-portfolio/
 │
 ├── .gitignore
 ├── .eslintrc.json
-├── next.config.ts
+├── next.config.mjs
 ├── tailwind.config.ts
 ├── postcss.config.mjs
 ├── tsconfig.json
@@ -103,7 +103,7 @@ npm run start   # Preview production build lokal
 
 ## Deploy ke Vercel
 
-### Cara A — GUI (Direkomendasikan)
+### Cara A: GUI (Direkomendasikan)
 
 1. Push code ke GitHub
 2. Buka [vercel.com](https://vercel.com) → **Add New Project**
@@ -113,7 +113,7 @@ npm run start   # Preview production build lokal
 
 Vercel rebuild otomatis setiap `git push` ke branch `main`.
 
-### Cara B — Vercel CLI
+### Cara B: Vercel CLI
 
 ```bash
 npm i -g vercel
@@ -121,7 +121,7 @@ vercel login
 vercel --prod
 ```
 
-### Cara C — GitHub Actions (opsional, advanced)
+### Cara C: GitHub Actions (opsional, advanced)
 
 Buat `.github/workflows/deploy.yml` dengan action `vercel/actions`.
 
@@ -129,7 +129,7 @@ Buat `.github/workflows/deploy.yml` dengan action `vercel/actions`.
 
 ## Kustomisasi Konten
 
-Semua konten portfolio ada di folder `data/` — tidak perlu menyentuh komponen.
+Semua konten portfolio ada di folder `data/`, tidak perlu menyentuh komponen.
 
 ### Update proyek
 
@@ -143,7 +143,7 @@ githubUrl: 'https://github.com/USERNAME/nama-project',
 
 ### Update harga jasa
 
-Edit `data/services.ts` — ubah field `price` dan `deliverables`.
+Edit `data/services.ts`, ubah field `price` dan `deliverables`.
 
 ### Update link sosial & nomor WhatsApp
 
@@ -161,10 +161,6 @@ export const EMAIL        = 'email@kamu.com'
 
 Perubahan di `socialLinks.ts` otomatis tersebar ke semua komponen
 (Navbar, Hero, About, Contact, Footer) karena semua import dari sana.
-
-### Update tech stack
-
-Edit `data/techStack.ts` — tambah/hapus item, ubah `level` antara `'solid'` atau `'learning'`.
 
 ---
 
@@ -186,9 +182,9 @@ Edit `data/techStack.ts` — tambah/hapus item, ubah `level` antara `'solid'` at
 ## Checklist Responsif
 
 ```
-Mobile  (320–480px)  → hero stack vertikal, navbar hamburger
-Tablet  (481–768px)  → grid 2 kolom services & projects
-Desktop (769px+)     → grid 4 kolom services, 2 kolom projects
+Mobile  (320-480px)  -> hero stack vertikal, navbar hamburger
+Tablet  (481-768px)  -> grid 2 kolom services & projects
+Desktop (769px+)     -> grid 4 kolom services, 2 kolom projects
 ```
 
 Test di Chrome: DevTools → Toggle Device Toolbar → pilih Pixel 7, iPhone 14, iPad.
@@ -197,39 +193,68 @@ Test di Chrome: DevTools → Toggle Device Toolbar → pilih Pixel 7, iPhone 14,
 
 ## Design System
 
+Monochrome-first with a single accent. Neutrals come from Tailwind's built-in
+`zinc` scale (near-black background, near-white text, never pure `#000`/`#fff`).
+Category or status distinctions are communicated through text labels and
+position, not through a rainbow of colors.
+
 ### Warna
 
-| Token     | Hex       | Penggunaan             |
-|-----------|-----------|------------------------|
-| `base`    | `#060B14` | Background utama       |
-| `surface` | `#0D1528` | Background section alt |
-| `card`    | `#111827` | Background card        |
-| `gold`    | `#C9A227` | Aksen primer           |
-| `teal`    | `#14B8A6` | Aksen sekunder         |
-| `tx-1`    | `#F0F4FF` | Teks utama             |
-| `tx-2`    | `#8B9CC8` | Teks sekunder          |
-| `tx-3`    | `#4B5A7A` | Teks muted             |
+| Token          | Hex       | Penggunaan                              |
+|----------------|-----------|------------------------------------------|
+| `zinc-950`     | `#09090b` | Background utama                        |
+| `zinc-900/40`  | —         | Background surface/card (lihat `.surface`) |
+| `zinc-50`      | `#fafafa` | Teks utama                              |
+| `zinc-400`     | `#a1a1aa` | Teks sekunder                           |
+| `zinc-500/600` | —         | Teks muted / label kecil                |
+| `accent`       | `#2F5FE0` | Tombol solid (kontras dengan teks putih)|
+| `accent-text`  | `#6B93FF` | Teks/link/ikon aksen di atas background gelap |
+
+`accent` dan `accent-text` sengaja dua shade berbeda dari warna yang sama:
+`accent` dipakai untuk fill tombol (kontras terhadap teks putih), `accent-text`
+dipakai untuk teks/link di atas background gelap. Keduanya sudah dicek lolos
+kontras WCAG AA (≥4.5:1).
 
 ### Font
 
-- **Heading/display:** `Space Grotesk` — class `font-display`
-- **Body:** `Inter` — class `font-body`
-- Keduanya dimuat via `next/font/google` (zero layout shift, cached di edge)
+- **Satu keluarga font:** [Geist](https://vercel.com/font) (dibuat oleh Vercel),
+  `GeistSans` untuk teks umum dan `GeistMono` untuk kode/angka teknis.
+- Hierarki dibentuk lewat ukuran dan berat huruf, bukan lewat font kedua.
+- Dimuat via package `geist` + `next/font` (zero layout shift, self-hosted, di-cache di edge).
 
 ### Komponen Utility
 
-| Class            | Fungsi                                      |
-|------------------|---------------------------------------------|
-| `.card`          | Card dengan hover lift + border gold subtle |
-| `.card-static`   | Card tanpa hover effect                     |
-| `.btn-primary`   | Tombol gold gradient                        |
-| `.btn-secondary` | Tombol outline gold                         |
-| `.badge-gold`    | Badge aksen gold                            |
-| `.badge-teal`    | Badge aksen teal                            |
-| `.badge-muted`   | Badge abu-abu                               |
-| `.section-label` | Label kecil uppercase sebelum heading       |
-| `.icon-btn`      | Tombol icon bulat dengan border subtle      |
-| `.reveal`        | Elemen yang fade-up saat masuk viewport     |
+| Class                 | Fungsi                                              |
+|-----------------------|------------------------------------------------------|
+| `.surface`             | Container dengan border tipis, dipakai hanya saat elevasi punya arti (pricing, project card) |
+| `.surface-interactive` | Tambahan hover state untuk `.surface` yang bisa diklik |
+| `.btn-primary`         | Tombol solid accent, radius 8px                    |
+| `.btn-secondary`       | Tombol outline, radius 8px                          |
+| `.tag`                 | Label kecil persegi (bukan pill), netral, untuk metadata yang genuinely enumerable (kategori, stack, topik) |
+| `.section-pad`         | Padding vertikal konsisten antar section            |
+
+### Motion
+
+Scroll-reveal dan animasi expand/collapse pakai `framer-motion`, bukan CSS. Komponennya
+ada di `components/Reveal.tsx`:
+
+| Komponen               | Fungsi                                              |
+|-------------------------|------------------------------------------------------|
+| `<Reveal>`              | Satu elemen: fade + naik 10px sekali saat masuk viewport |
+| `<RevealGroup>` + `<RevealItem>` | Grid/list: children stagger otomatis (tidak perlu hitung delay manual per-item) |
+
+Semua menghormati `prefers-reduced-motion` lewat `useReducedMotion()`, animasi otomatis
+jadi instan kalau user set itu di sistem. Dipakai sengaja terbatas: reveal saat scroll,
+dan height-animation di expand/collapse case study `ProjectCard`. Hover tombol/nav/menu
+mobile tetap CSS transition biasa, tidak semua dipindah ke JS.
+
+### Radius (skala tetap, jangan dicampur)
+
+| Ukuran | Token | Dipakai untuk        |
+|--------|-------|------------------------|
+| 6px    | `xs`  | Tag/label kecil        |
+| 8px    | `sm`  | Tombol, input          |
+| 12px   | `md`  | Card, container besar  |
 
 ---
 
@@ -238,16 +263,15 @@ Test di Chrome: DevTools → Toggle Device Toolbar → pilih Pixel 7, iPhone 14,
 ### Server Components (default, zero client JS)
 
 `HeroSection`, `AboutSection`, `ServicesSection`, `FeaturedProjects`,
-`TechStackSection`, `CybersecuritySection`, `TestimonialsSection`,
-`ContactSection`, `Footer`
+`CybersecuritySection`, `ContactSection`, `CaseStudySection`, `Footer`
 
 ### Client Components (`'use client'`)
 
 | Komponen      | Alasan butuh client                          |
 |---------------|----------------------------------------------|
-| `RevealInit`  | `useEffect` untuk IntersectionObserver       |
+| `Reveal`      | `framer-motion` hooks (`useReducedMotion`, `whileInView`) |
 | `Navbar`      | `useState` untuk scroll state & mobile menu  |
-| `ProjectCard` | `useState` untuk toggle case study expand    |
+| `ProjectCard` | `useState` + `framer-motion` untuk expand/collapse animasi |
 
 ---
 
@@ -272,7 +296,6 @@ Test di Chrome: DevTools → Toggle Device Toolbar → pilih Pixel 7, iPhone 14,
   result: 'Hasil konkret.',
   demoUrl: 'https://demo.vercel.app',
   githubUrl: 'https://github.com/USERNAME/nama-project',
-  colorAccent: 'gold',         // 'gold' atau 'teal'
 },
 ```
 
@@ -296,7 +319,7 @@ Target Lighthouse score: Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95.
 
 ## Lisensi
 
-MIT — bebas digunakan, dimodifikasi, dan didistribusikan.
+MIT, bebas digunakan, dimodifikasi, dan didistribusikan.
 
 ---
 

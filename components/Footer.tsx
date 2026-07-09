@@ -2,12 +2,11 @@ import { Github, Linkedin, MessageCircle } from 'lucide-react'
 import { GITHUB_URL, LINKEDIN_URL, WHATSAPP_URL } from '@/data/socialLinks'
 
 const footerLinks = [
-  { label: 'Tentang',    href: '#about'    },
-  { label: 'Jasa',       href: '#services' },
-  { label: 'Proyek',     href: '#projects' },
-  { label: 'Tech Stack', href: '#techstack'},
-  { label: 'Security',   href: '#security' },
-  { label: 'Kontak',     href: '#contact'  },
+  { label: 'Tentang',  href: '#about'    },
+  { label: 'Jasa',     href: '#services' },
+  { label: 'Proyek',   href: '#projects' },
+  { label: 'Security', href: '#security' },
+  { label: 'Kontak',   href: '#contact'  },
 ]
 
 const socialIcons = [
@@ -20,23 +19,23 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-gold/8 py-10" aria-label="Footer">
-      <div className="max-w-6xl mx-auto px-5 sm:px-8">
+    <footer className="border-t border-white/[0.08] py-10" aria-label="Footer">
+      <div className="max-w-content mx-auto px-5 sm:px-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
 
           {/* Brand */}
           <div>
-            <p className="font-display font-bold text-xl text-gold-gradient mb-1">RF</p>
-            <p className="text-tx-3 text-xs">Muhammad Rafly Yahya Ramadhan</p>
-            <p className="text-tx-3 text-xs mt-0.5">Informatika · ITERA · Lampung</p>
+            <p className="font-semibold text-lg text-zinc-50 mb-1">RF</p>
+            <p className="text-zinc-500 text-xs">Muhammad Rafly Yahya Ramadhan</p>
+            <p className="text-zinc-500 text-xs mt-0.5">Informatika · ITERA · Lampung</p>
           </div>
 
-          {/* Nav — plain anchor hrefs, smooth scroll from CSS */}
+          {/* Nav */}
           <nav aria-label="Footer navigation">
             <ul className="flex flex-wrap gap-x-6 gap-y-2" role="list">
               {footerLinks.map(({ label, href }) => (
                 <li key={href}>
-                  <a href={href} className="text-xs text-tx-3 hover:text-tx-1 transition-colors duration-200">
+                  <a href={href} className="text-xs text-zinc-500 hover:text-zinc-50 transition-colors duration-150">
                     {label}
                   </a>
                 </li>
@@ -45,9 +44,16 @@ export default function Footer() {
           </nav>
 
           {/* Socials */}
-          <div className="flex gap-2.5" aria-label="Social media">
+          <div className="flex gap-2" aria-label="Social media">
             {socialIcons.map(({ icon: Icon, href, label }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label={label}>
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="w-8 h-8 rounded-sm border border-white/[0.1] flex items-center justify-center text-zinc-500 hover:text-zinc-50 hover:border-white/[0.2] transition-colors duration-150"
+              >
                 <Icon size={14} aria-hidden="true" />
               </a>
             ))}
@@ -55,15 +61,15 @@ export default function Footer() {
 
         </div>
 
-        <div className="mt-8 pt-6 border-t border-gold/6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-tx-3 text-xs">
-            © {year} Rafly — Built with Next.js + TypeScript + Tailwind
+        <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-zinc-500 text-xs">
+            © {year} Rafly · Built with Next.js, TypeScript, Tailwind
           </p>
-          <p className="text-tx-3 text-xs">
+          <p className="text-zinc-500 text-xs">
             Deployed on{' '}
-            <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="hover:text-tx-1 transition-colors duration-200">Vercel</a>
+            <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-50 transition-colors duration-150">Vercel</a>
             {' · '}Source on{' '}
-            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-tx-1 transition-colors duration-200">GitHub</a>
+            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-zinc-50 transition-colors duration-150">GitHub</a>
           </p>
         </div>
       </div>

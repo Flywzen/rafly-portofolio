@@ -1,9 +1,4 @@
 @tailwind base;
-
-:root {
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, sans-serif;
-}
 @tailwind components;
 @tailwind utilities;
 
@@ -14,7 +9,7 @@
   }
 
   body {
-    @apply bg-base text-tx-1 font-body;
+    @apply bg-zinc-950 text-zinc-50 font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -24,194 +19,96 @@
   }
 
   ::selection {
-    background-color: rgba(201, 162, 39, 0.2);
-    color: #e8c84a;
+    background-color: rgb(47 95 224 / 0.24);
+    color: #ffffff;
   }
 
   :focus-visible {
-    outline: 2px solid #c9a227;
+    outline: 2px solid #6b93ff;
     outline-offset: 3px;
     border-radius: 4px;
   }
 }
 
 @layer components {
-  /* ── Text gradients ── */
-  .text-gold-gradient {
-    background: linear-gradient(135deg, #c9a227 0%, #e8c84a 50%, #c9a227 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /*
+   * Elevated container. Used only where a boundary communicates real
+   * grouping (pricing tiers, project cards) — not applied by default to
+   * every block of content.
+   */
+  .surface {
+    @apply bg-zinc-900/40 border border-white/[0.08] rounded-md;
+    transition: border-color 0.2s ease;
   }
 
-  .text-teal-gradient {
-    background: linear-gradient(135deg, #0d9488, #14b8a6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .surface-interactive:hover {
+    @apply border-white/[0.16];
   }
 
-  /* ── Cards ── */
-  .card {
-    background: linear-gradient(145deg, #111827, #0d1528);
-    border: 1px solid rgba(201, 162, 39, 0.1);
-    border-radius: 16px;
-    transition: border-color 0.25s ease, transform 0.25s ease;
-  }
-
-  .card:hover {
-    border-color: rgba(201, 162, 39, 0.28);
-    transform: translateY(-2px);
-  }
-
-  .card-static {
-    background: linear-gradient(145deg, #111827, #0d1528);
-    border: 1px solid rgba(201, 162, 39, 0.1);
-    border-radius: 16px;
-  }
-
-  /* ── Buttons ── */
+  /* ── Buttons — one radius (sm), one accent, no gradients ── */
   .btn-primary {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #c9a227, #e8c84a);
-    color: #060b14;
-    font-family: var(--font-display), sans-serif;
-    font-weight: 600;
+    padding: 0.7rem 1.25rem;
+    @apply bg-accent text-white rounded-sm;
+    font-weight: 500;
     font-size: 0.9rem;
-    border-radius: 10px;
     border: none;
     cursor: pointer;
     text-decoration: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.15s ease, transform 0.1s ease;
     white-space: nowrap;
   }
 
   .btn-primary:hover {
-    opacity: 0.88;
-    transform: translateY(-1px);
+    background-color: #2851c4;
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
   }
 
   .btn-secondary {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
+    padding: 0.7rem 1.25rem;
     background: transparent;
-    color: #f0f4ff;
-    font-family: var(--font-display), sans-serif;
+    @apply text-zinc-50 rounded-sm border border-white/[0.14];
     font-weight: 500;
     font-size: 0.9rem;
-    border: 1px solid rgba(201, 162, 39, 0.35);
-    border-radius: 10px;
     cursor: pointer;
     text-decoration: none;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
     white-space: nowrap;
   }
 
   .btn-secondary:hover {
-    background: rgba(201, 162, 39, 0.08);
-    border-color: rgba(201, 162, 39, 0.6);
-    transform: translateY(-1px);
+    @apply border-white/[0.28] bg-white/[0.04];
   }
 
-  /* ── Badges ── */
-  .badge {
+  .btn-secondary:active {
+    transform: scale(0.98);
+  }
+
+  /* ── Tags — small, rectangular, low-key. Not pills, not colorful. ── */
+  .tag {
     display: inline-block;
-    padding: 0.2rem 0.65rem;
+    padding: 0.2rem 0.55rem;
     font-size: 0.7rem;
-    font-weight: 600;
-    font-family: var(--font-display), sans-serif;
-    border-radius: 999px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-weight: 500;
+    @apply rounded-xs text-zinc-400 border border-white/[0.1] bg-white/[0.03];
   }
 
-  .badge-gold {
-    background: rgba(201, 162, 39, 0.12);
-    color: #c9a227;
-    border: 1px solid rgba(201, 162, 39, 0.22);
-  }
-
-  .badge-teal {
-    background: rgba(20, 184, 166, 0.12);
-    color: #14b8a6;
-    border: 1px solid rgba(20, 184, 166, 0.22);
-  }
-
-  .badge-muted {
-    background: rgba(139, 156, 200, 0.08);
-    color: #8b9cc8;
-    border: 1px solid rgba(139, 156, 200, 0.15);
-  }
-
-  /* ── Section label ── */
-  .section-label {
-    font-family: var(--font-display), sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #c9a227;
-    margin-bottom: 0.75rem;
-  }
-
-  /* ── Divider ── */
-  .divider-gold {
-    width: 48px;
-    height: 2px;
-    background: linear-gradient(90deg, #c9a227, #14b8a6);
-    border-radius: 2px;
-    margin-bottom: 1.5rem;
-  }
-
-  /* ── Section padding ── */
+  /* ── Section rhythm ── */
   .section-pad {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-  }
-
-  /* ── Icon button ── */
-  .icon-btn {
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 10px;
-    border: 1px solid rgba(201, 162, 39, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #4b5a7a;
-    text-decoration: none;
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .icon-btn:hover {
-    color: #f0f4ff;
-    border-color: rgba(201, 162, 39, 0.4);
+    padding-top: 5.5rem;
+    padding-bottom: 5.5rem;
   }
 }
 
 @layer utilities {
-  /* Scroll-reveal — toggled by IntersectionObserver in Navbar/page */
-  .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.55s ease-out, transform 0.55s ease-out;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .reveal-d1 { transition-delay: 0.1s; }
-  .reveal-d2 { transition-delay: 0.2s; }
-  .reveal-d3 { transition-delay: 0.3s; }
-  .reveal-d4 { transition-delay: 0.4s; }
-
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
