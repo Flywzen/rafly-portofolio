@@ -7,22 +7,23 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      aria-label="Perkenalan"
+      aria-label="Introduction"
       className="relative flex flex-col justify-center pt-24 pb-16 min-h-[80dvh]"
     >
       <RevealGroup className="max-w-content mx-auto px-5 sm:px-8 w-full" stagger={0.1}>
         {/* Headline */}
         <RevealItem>
-          <h1 className="font-semibold leading-[1.1] tracking-tight mb-6 text-4xl sm:text-5xl lg:text-6xl text-zinc-50 max-w-3xl">
-            Website yang benar-benar bekerja untuk bisnis Anda.
+          <h1 className="leading-[1.7] mb-8 text-lg sm:text-xl lg:text-2xl text-zinc-50 max-w-2xl">
+            A website that actually works for your business.
           </h1>
         </RevealItem>
 
         {/* Sub */}
         <RevealItem>
-          <p className="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed mb-10">
-            Saya Rafly, mahasiswa Informatika ITERA. Saya bangun website UMKM dan
-            portfolio yang cepat, rapi, dan benar-benar terpakai.
+          <p className="text-zinc-400 text-lg sm:text-xl max-w-xl leading-relaxed mb-10">
+            I&apos;m Rafly, a Computer Science student at ITERA. I build websites for
+            small businesses and personal portfolios that are fast, clean, and actually
+            get used.
           </p>
         </RevealItem>
 
@@ -32,7 +33,7 @@ export default function HeroSection() {
             {CONTACT_CTA_LABEL}
           </a>
           <a href="#projects" className="btn-secondary">
-            Lihat Proyek
+            View Projects
             <ArrowDown size={16} aria-hidden="true" />
           </a>
         </RevealItem>

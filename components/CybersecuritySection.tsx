@@ -9,17 +9,17 @@ const devSecExamples = [
   {
     bug: 'innerHTML = userInput',
     vuln: 'XSS (Cross-Site Scripting)',
-    fix: 'Gunakan textContent atau sanitize dengan DOMPurify.',
+    fix: 'Use textContent, or sanitize with DOMPurify.',
   },
   {
     bug: '`SELECT * WHERE id = ${req.params.id}`',
     vuln: 'SQL Injection',
-    fix: 'Parameterized query / prepared statement. Selalu.',
+    fix: 'Parameterized queries or prepared statements. Always.',
   },
   {
-    bug: 'Access check hanya di frontend',
+    bug: 'Access check only exists on the frontend',
     vuln: 'Broken Access Control / IDOR',
-    fix: 'Backend harus validasi siapa yang boleh akses resource apa.',
+    fix: "The backend has to validate who's allowed to access what.",
   },
 ]
 
@@ -28,15 +28,15 @@ const writeUps: WriteUp[] = [
     title: 'Reflected XSS via DOM innerHTML, PortSwigger Lab',
     tags: ['XSS', 'DOM'],
     description:
-      'Input dari parameter URL langsung dimasukkan ke innerHTML tanpa sanitasi. Payload sederhana mampu mengeksekusi script di konteks halaman.',
-    impact: 'Session hijacking via cookie theft, defacement, phishing yang meyakinkan.',
+      "A URL parameter gets dropped straight into innerHTML with no sanitization. A simple payload is enough to execute a script in the page's context.",
+    impact: 'Session hijacking via cookie theft, defacement, convincing phishing pages.',
   },
   {
-    title: 'SQL Injection pada Form Login, DVWA Low',
+    title: 'SQL Injection in a Login Form, DVWA Low',
     tags: ['SQLi', 'Auth Bypass'],
     description:
-      'Query tidak menggunakan prepared statement. Input `\' OR \'1\'=\'1` berhasil mem-bypass autentikasi karena query selalu bernilai true.',
-    impact: 'Full database dump, bypass login tanpa kredensial valid.',
+      "The query doesn't use a prepared statement. The input `' OR '1'='1` bypasses authentication because the query always evaluates to true.",
+    impact: 'Full database dump, login bypass without valid credentials.',
   },
 ]
 
@@ -47,7 +47,7 @@ const learningPath: LearningPhase[] = [
     status: 'done',
     items: [
       'HTTP request/response lifecycle',
-      'HTML, CSS, JavaScript dasar',
+      'HTML, CSS, JavaScript basics',
       'Authentication & session management',
       'Cookie, localStorage & JWT basics',
     ],
@@ -71,7 +71,7 @@ const learningPath: LearningPhase[] = [
       'PortSwigger Web Security Academy',
       'TryHackMe free rooms',
       'HackTheBox Academy',
-      'DVWA lokal untuk eksperimen',
+      'Local DVWA for experimentation',
     ],
   },
   {
@@ -79,8 +79,8 @@ const learningPath: LearningPhase[] = [
     title: 'Bug Bounty',
     status: 'upcoming',
     items: [
-      'Baca write-up HackerOne & Bugcrowd',
-      'Mulai dari program private/tertutup',
+      'Read write-ups from HackerOne & Bugcrowd',
+      'Start with private/invite-only programs',
       'Target: first valid report',
     ],
   },
@@ -91,33 +91,35 @@ const learningPath: LearningPhase[] = [
 type PhaseStatus = LearningPhase['status']
 
 const STATUS_LABEL: Record<PhaseStatus, string> = {
-  done:     'Selesai',
-  active:   'Aktif',
+  done:     'Done',
+  active:   'Active',
   upcoming: 'Upcoming',
 }
 
 /** Plain text weight/color, not a boxed badge: quieter for a status shown 4x in a row. */
 function statusClassName(status: PhaseStatus): string {
   return status === 'active'
-    ? 'text-xs font-medium text-accent-text'
-    : 'text-xs text-zinc-500'
+    ? 'text-sm text-accent-text'
+    : 'text-sm text-zinc-500'
 }
 
 function PhaseCard({ phase }: { phase: LearningPhase }) {
   return (
-    <article className="surface p-5" aria-label={`Fase ${phase.phase}: ${phase.title}`}>
+    <article className="surface p-5" aria-label={`Phase ${phase.phase}: ${phase.title}`}>
       <div className="flex items-center justify-between mb-3">
-        <span className="font-mono text-xs text-zinc-500" aria-label={`Fase ${phase.phase}`}>
+        <span className="font-mono text-sm text-zinc-500" aria-label={`Phase ${phase.phase}`}>
           {phase.phase}
         </span>
         <span className={statusClassName(phase.status)}>
           {STATUS_LABEL[phase.status]}
         </span>
       </div>
-      <h4 className="font-semibold text-zinc-50 text-sm mb-3">{phase.title}</h4>
+      <h4 className="font-pixel text-[0.65rem] uppercase text-zinc-50 leading-[1.8] mb-3">
+        {phase.title}
+      </h4>
       <ul className="space-y-2" role="list">
         {phase.items.map((item) => (
-          <li key={item} className="text-zinc-400 text-xs leading-relaxed pl-3 border-l border-white/[0.1]">
+          <li key={item} className="text-zinc-400 text-base leading-relaxed pl-3 border-l-2 border-white/20">
             {item}
           </li>
         ))}
@@ -134,12 +136,12 @@ function WriteUpCard({ wu }: { wu: WriteUp }) {
           <span key={t} className="tag">{t}</span>
         ))}
       </div>
-      <h4 className="font-semibold text-zinc-50 text-sm mb-2 leading-snug">
+      <h4 className="font-pixel text-[0.6rem] uppercase text-zinc-50 leading-[1.8] mb-3">
         {wu.title}
       </h4>
-      <p className="text-zinc-400 text-xs leading-relaxed mb-3">{wu.description}</p>
-      <p className="text-xs">
-        <span className="text-accent-text font-medium">Impact: </span>
+      <p className="text-zinc-400 text-base leading-relaxed mb-3">{wu.description}</p>
+      <p className="text-base">
+        <span className="text-accent-text">Impact: </span>
         <span className="text-zinc-400">{wu.impact}</span>
       </p>
     </article>
@@ -166,15 +168,15 @@ export default function CybersecuritySection() {
         <Reveal className="mb-8 max-w-2xl">
           <h2
             id="security-heading"
-            className="font-semibold text-3xl sm:text-4xl text-zinc-50 leading-tight mb-4 tracking-tight"
+            className="text-lg sm:text-xl text-zinc-50 leading-[1.8] mb-5"
           >
-            Belajar security bukan untuk <span className="text-accent-text">merusak.</span>
+            Learning security isn&apos;t about <span className="text-accent-text">breaking things.</span>
           </h2>
-          <p className="text-zinc-400 text-base leading-relaxed">
-            Membangun website membuat saya sadar betapa mudahnya satu baris kode yang ceroboh
-            menjadi celah masuk. Saya belajar keamanan web secara aktif, lewat labs dan praktik
-            langsung, supaya kode yang saya tulis tidak hanya berfungsi, tapi juga tidak mudah
-            ditembus. Tiga kesalahan paling umum yang saya pelajari untuk dihindari:
+          <p className="text-zinc-400 text-lg leading-relaxed">
+            Building websites showed me how easily one careless line of code becomes an
+            opening. I study web security actively, through labs and hands-on practice,
+            because working code and secure code aren&apos;t automatically the same
+            thing. Three of the most common mistakes I&apos;ve learned to avoid:
           </p>
         </Reveal>
 
@@ -183,23 +185,23 @@ export default function CybersecuritySection() {
           {devSecExamples.map(({ bug, vuln, fix }) => (
             <RevealItem
               key={vuln}
-              className="rounded-sm p-4 border border-white/[0.08] bg-white/[0.02]"
+              className="p-4 border-2 border-white/20 bg-white/[0.03]"
             >
-              <div role="group" aria-label={`Contoh: ${vuln}`}>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-1.5">
-                  Kesalahan coding
+              <div role="group" aria-label={`Example: ${vuln}`}>
+                <p className="font-pixel text-[0.55rem] text-zinc-500 uppercase mb-2">
+                  The coding mistake
                 </p>
-                <code className="text-xs text-zinc-300 font-mono block mb-3 break-all">
+                <code className="text-sm text-zinc-300 font-mono block mb-4 break-all">
                   {bug}
                 </code>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-1.5">
-                  Celah yang timbul
+                <p className="font-pixel text-[0.55rem] text-zinc-500 uppercase mb-2">
+                  The vulnerability it creates
                 </p>
-                <p className="text-xs text-accent-text font-medium mb-3">{vuln}</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wide mb-1.5">
-                  Cara benar
+                <p className="text-base text-accent-text mb-4">{vuln}</p>
+                <p className="font-pixel text-[0.55rem] text-zinc-500 uppercase mb-2">
+                  The right way
                 </p>
-                <p className="text-xs text-zinc-400 leading-relaxed">{fix}</p>
+                <p className="text-base text-zinc-400 leading-relaxed">{fix}</p>
               </div>
             </RevealItem>
           ))}
@@ -208,11 +210,11 @@ export default function CybersecuritySection() {
         {/* Write-ups — evidence */}
         <div className="mb-16">
           <Reveal className="mb-6">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-zinc-50 text-lg">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <h3 className="text-base text-zinc-50 leading-[1.8]">
                 Write-ups & Lab Notes
               </h3>
-              <span className="text-zinc-500 text-xs">Diperbarui setiap minggu</span>
+              <span className="text-zinc-500 text-base">Updated weekly</span>
             </div>
           </Reveal>
 
@@ -225,19 +227,19 @@ export default function CybersecuritySection() {
 
             {/* Placeholder — text only */}
             <RevealItem className="surface p-5 flex flex-col items-center justify-center text-center min-h-[140px]">
-              <p className="text-zinc-500 text-xs leading-relaxed">
-                Write-up baru ditambahkan setiap minggu.
+              <p className="text-zinc-500 text-base leading-relaxed">
+                New write-ups added weekly.
                 <br />
-                Pantau di GitHub.
+                Follow along on GitHub.
               </p>
               <a
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent-text text-xs mt-3 hover:underline inline-flex items-center gap-1"
+                className="text-accent-text text-base mt-3 hover:underline inline-flex items-center gap-1"
               >
-                Lihat GitHub
-                <ExternalLink size={11} aria-hidden="true" />
+                View GitHub
+                <ExternalLink size={13} aria-hidden="true" />
               </a>
             </RevealItem>
           </RevealGroup>
@@ -246,7 +248,7 @@ export default function CybersecuritySection() {
         {/* Learning roadmap — process */}
         <div>
           <Reveal className="mb-6">
-            <h3 className="font-semibold text-zinc-50 text-lg">
+            <h3 className="text-base text-zinc-50 leading-[1.8]">
               Learning Roadmap
             </h3>
           </Reveal>

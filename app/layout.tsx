@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
-import { GeistSans } from 'geist/font/sans'
+import '@fontsource/press-start-2p'
+import '@fontsource/vt323'
 import { GeistMono } from 'geist/font/mono'
 import MotionProvider from '@/components/MotionProvider'
 import './globals.css'
@@ -7,13 +8,13 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Rafly. Web Developer & UI/UX',
   description:
-    'Saya Rafly, web developer dan mahasiswa Informatika ITERA. Saya membangun website UMKM, company profile, dan portfolio personal yang cepat, rapi, dan siap dipakai bisnis.',
+    "I'm Rafly, a web developer and Computer Science student at ITERA. I build small business websites, company profiles, and personal portfolios that are fast, clean, and ready for real use.",
   keywords: [
     'web developer indonesia',
     'freelance web developer lampung',
-    'jasa website UMKM',
+    'small business website services',
     'portfolio rafly',
-    'informatika itera',
+    'computer science itera',
     'next.js developer',
     'react developer indonesia',
   ],
@@ -21,14 +22,14 @@ export const metadata: Metadata = {
   creator: 'Muhammad Rafly Yahya Ramadhan',
   openGraph: {
     title: 'Rafly. Web Developer & UI/UX',
-    description: 'Website yang tidak hanya terlihat bagus, tapi bekerja untuk bisnis Anda.',
+    description: "A website that doesn't just look good. It works for your business.",
     type: 'website',
-    locale: 'id_ID',
+    locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Rafly. Web Developer & UI/UX',
-    description: 'Website yang tidak hanya terlihat bagus, tapi bekerja untuk bisnis Anda.',
+    description: "A website that doesn't just look good. It works for your business.",
   },
   robots: { index: true, follow: true },
 }
@@ -43,7 +44,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" className={GeistMono.variable}>
       <body className="bg-zinc-950 text-zinc-50 font-sans antialiased">
         <MotionProvider>{children}</MotionProvider>
       </body>

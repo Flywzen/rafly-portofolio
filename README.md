@@ -1,7 +1,7 @@
 
 **Muhammad Rafly Yahya Ramadhan**, web developer & UI/UX.
 
-**Live:** [rafly.vercel.app](https://rafly.vercel.app) *(update setelah deploy)*
+**Live:** [rafly.vercel.app](https://rafly.vercel.app) *(update after deploying)*
 
 ---
 
@@ -14,7 +14,7 @@
 | Styling      | Tailwind CSS v3                         |
 | Motion       | framer-motion (scroll-reveal + expand/collapse only) |
 | Icons        | Lucide React                            |
-| Fonts        | Geist Sans + Geist Mono (next/font)     |
+| Fonts        | Press Start 2P + VT323 (@fontsource, self-hosted) + Geist Mono (next/font, code only) |
 | Deployment   | Vercel                                  |
 | Source       | GitHub                                  |
 
@@ -22,28 +22,30 @@ Zero external UI libraries. Zero paid dependencies. Zero backend.
 
 ---
 
-## Struktur Folder
+## Folder Structure
 
 ```
 rafly-portfolio/
 ├── app/
-│   ├── layout.tsx          # Root layout: font, metadata, viewport
-│   ├── page.tsx            # One-page: menyusun semua section
+│   ├── layout.tsx          # Root layout: fonts, metadata, viewport
+│   ├── page.tsx            # One page: assembles every section
 │   └── globals.css         # Tailwind + design system utilities
 │
 ├── components/
 │   ├── Reveal.tsx             # Client, framer-motion scroll-reveal primitives (Reveal, RevealGroup, RevealItem)
+│   ├── PixelCorners.tsx      # Client-safe hover accent: 4 corner pixels on interactive cards
+│   ├── MotionProvider.tsx    # Client, LazyMotion wrapper (loads domAnimation only)
 │   ├── Navbar.tsx            # Client, sticky nav, mobile menu
 │   ├── HeroSection.tsx       # Server, headline, CTA
 │   ├── AboutSection.tsx      # Server, bio prose (single column, no duplication)
-│   ├── ServicesSection.tsx   # Server, 4 paket jasa + pricing
+│   ├── ServicesSection.tsx   # Server, 4 service packages + pricing
 │   ├── ProjectCard.tsx       # Client, expandable case study card
 │   ├── CaseStudyFields.tsx   # Shared row definitions (used by ProjectCard + CaseStudySection)
 │   ├── CaseStudySection.tsx  # Server, standalone full case study view
-│   ├── FeaturedProjects.tsx  # Server, grid wrapper untuk ProjectCard
+│   ├── FeaturedProjects.tsx  # Server, grid wrapper for ProjectCard
 │   ├── CybersecuritySection.tsx # Server, dev/sec bridge + write-ups + roadmap
-│   ├── ContactSection.tsx    # Server, WhatsApp CTA + kontak
-│   └── Footer.tsx            # Server, nav, sosial, copyright
+│   ├── ContactSection.tsx    # Server, WhatsApp CTA + contact
+│   └── Footer.tsx            # Server, nav, socials, copyright
 │
 ├── data/
 │   ├── projects.ts         # Typed project data (Project[])
@@ -70,9 +72,9 @@ rafly-portfolio/
 
 ---
 
-## Setup & Jalankan
+## Setup & Run
 
-### 1. Clone repo
+### 1. Clone the repo
 
 ```bash
 git clone https://github.com/USERNAME/rafly-portfolio.git
@@ -85,35 +87,35 @@ cd rafly-portfolio
 npm install
 ```
 
-### 3. Jalankan dev server
+### 3. Run the dev server
 
 ```bash
 npm run dev
-# Buka http://localhost:3000
+# Open http://localhost:3000
 ```
 
-### 4. Build production
+### 4. Production build
 
 ```bash
 npm run build
-npm run start   # Preview production build lokal
+npm run start   # Preview the production build locally
 ```
 
 ---
 
-## Deploy ke Vercel
+## Deploy to Vercel
 
-### Cara A: GUI (Direkomendasikan)
+### Option A: GUI (recommended)
 
-1. Push code ke GitHub
-2. Buka [vercel.com](https://vercel.com) → **Add New Project**
-3. Import repo dari GitHub
-4. Framework Preset: **Next.js** (auto-detect)
-5. Klik **Deploy**
+1. Push the code to GitHub
+2. Open [vercel.com](https://vercel.com) → **Add New Project**
+3. Import the repo from GitHub
+4. Framework Preset: **Next.js** (auto-detected)
+5. Click **Deploy**
 
-Vercel rebuild otomatis setiap `git push` ke branch `main`.
+Vercel rebuilds automatically on every `git push` to `main`.
 
-### Cara B: Vercel CLI
+### Option B: Vercel CLI
 
 ```bash
 npm i -g vercel
@@ -121,144 +123,177 @@ vercel login
 vercel --prod
 ```
 
-### Cara C: GitHub Actions (opsional, advanced)
+### Option C: GitHub Actions (optional, advanced)
 
-Buat `.github/workflows/deploy.yml` dengan action `vercel/actions`.
+Create `.github/workflows/deploy.yml` using the `vercel/actions` action.
 
 ---
 
-## Kustomisasi Konten
+## Customizing Content
 
-Semua konten portfolio ada di folder `data/`, tidak perlu menyentuh komponen.
+All portfolio content lives in the `data/` folder. No need to touch the components.
 
-### Update proyek
+### Update projects
 
 Edit `data/projects.ts`:
 
 ```typescript
-// Ganti '#' dengan URL nyata setelah project live
-demoUrl: 'https://nama-project.vercel.app',
-githubUrl: 'https://github.com/USERNAME/nama-project',
+// Replace '#' with real URLs once the project is live
+demoUrl: 'https://project-name.vercel.app',
+githubUrl: 'https://github.com/USERNAME/project-name',
 ```
 
-### Update harga jasa
+### Update service pricing
 
-Edit `data/services.ts`, ubah field `price` dan `deliverables`.
+Edit `data/services.ts`, change the `price` and `deliverables` fields.
 
-### Update link sosial & nomor WhatsApp
+### Update social links & WhatsApp number
 
 Edit `data/socialLinks.ts`:
 
 ```typescript
 export const WHATSAPP_URL =
-  'https://wa.me/628XXXXXXXXX?text=Halo%20Rafly...'
-//                  ^^^^^^^^^^ ganti dengan nomor aktif
+  'https://wa.me/628XXXXXXXXX?text=Hi%20Rafly...'
+//                  ^^^^^^^^^^ replace with a real number
 
-export const GITHUB_URL   = 'https://github.com/USERNAME_KAMU'
-export const LINKEDIN_URL = 'https://linkedin.com/in/USERNAME_KAMU'
-export const EMAIL        = 'email@kamu.com'
+export const GITHUB_URL   = 'https://github.com/YOUR_USERNAME'
+export const LINKEDIN_URL = 'https://linkedin.com/in/YOUR_USERNAME'
+export const EMAIL        = 'your@email.com'
 ```
 
-Perubahan di `socialLinks.ts` otomatis tersebar ke semua komponen
-(Navbar, Hero, About, Contact, Footer) karena semua import dari sana.
+Changes in `socialLinks.ts` automatically propagate to every component
+(Navbar, Hero, About, Contact, Footer) since they all import from there.
 
 ---
 
-## Checklist Sebelum Deploy
+## Pre-Deploy Checklist
 
-- [ ] Ganti `WHATSAPP_URL` dengan nomor WhatsApp aktif di `data/socialLinks.ts`
-- [ ] Ganti `GITHUB_URL` dan `LINKEDIN_URL` dengan akun nyata
-- [ ] Ganti `EMAIL` dengan email aktif
-- [ ] Update `demoUrl` dan `githubUrl` di `data/projects.ts` ketika project live
-- [ ] Update nama dan bio di `components/AboutSection.tsx` jika perlu
-- [ ] Ganti URL live di baris pertama README ini setelah deploy
-- [ ] Test di Chrome mobile (DevTools > Toggle device toolbar)
-- [ ] Test smooth scroll semua link navbar
-- [ ] Test expand/collapse ProjectCard di mobile
-- [ ] Periksa tab `<html lang="id">` sudah benar di `app/layout.tsx`
+- [ ] Replace `WHATSAPP_URL` with a real, active WhatsApp number in `data/socialLinks.ts`
+- [ ] Replace `GITHUB_URL` and `LINKEDIN_URL` with real accounts
+- [ ] Replace `EMAIL` with an active email address
+- [ ] Update `demoUrl` and `githubUrl` in `data/projects.ts` once each project is live
+- [ ] Update the name and bio in `components/AboutSection.tsx` if needed
+- [ ] Replace the live URL on the first line of this README after deploying
+- [ ] Test on Chrome mobile (DevTools > Toggle device toolbar)
+- [ ] Test smooth scroll on every navbar link
+- [ ] Test ProjectCard expand/collapse on mobile
+- [ ] Confirm `<html lang="en">` is correct in `app/layout.tsx`
 
 ---
 
-## Checklist Responsif
+## Responsive Checklist
 
 ```
-Mobile  (320-480px)  -> hero stack vertikal, navbar hamburger
-Tablet  (481-768px)  -> grid 2 kolom services & projects
-Desktop (769px+)     -> grid 4 kolom services, 2 kolom projects
+Mobile  (320-480px)  -> vertical hero stack, hamburger navbar
+Tablet  (481-768px)  -> 2-column grid for services & projects
+Desktop (769px+)     -> 4-column grid for services, 2-column for projects
 ```
 
-Test di Chrome: DevTools → Toggle Device Toolbar → pilih Pixel 7, iPhone 14, iPad.
+Test in Chrome: DevTools → Toggle Device Toolbar → pick Pixel 7, iPhone 14, iPad.
 
 ---
 
 ## Design System
 
-Monochrome-first with a single accent. Neutrals come from Tailwind's built-in
-`zinc` scale (near-black background, near-white text, never pure `#000`/`#fff`).
-Category or status distinctions are communicated through text labels and
-position, not through a rainbow of colors.
+**Full pixel-art reskin** (a deliberate choice, see the note below). 0 radius on every
+element, thick borders, hard-offset shadows (not blur), two pixel/terminal fonts. The
+color system and layout/IA underneath are unchanged from the previous version: one
+accent, neutral zinc, the same 6 sections.
 
-### Warna
+### Colors
 
-| Token          | Hex       | Penggunaan                              |
-|----------------|-----------|------------------------------------------|
-| `zinc-950`     | `#09090b` | Background utama                        |
-| `zinc-900/40`  | —         | Background surface/card (lihat `.surface`) |
-| `zinc-50`      | `#fafafa` | Teks utama                              |
-| `zinc-400`     | `#a1a1aa` | Teks sekunder                           |
-| `zinc-500/600` | —         | Teks muted / label kecil                |
-| `accent`       | `#2F5FE0` | Tombol solid (kontras dengan teks putih)|
-| `accent-text`  | `#6B93FF` | Teks/link/ikon aksen di atas background gelap |
+| Token          | Hex       | Usage                                   |
+|----------------|-----------|-------------------------------------------|
+| `zinc-950`     | `#09090b` | Main background                         |
+| `zinc-900`     | —         | Surface/card background (see `.surface`) |
+| `zinc-50`      | `#fafafa` | Primary text                            |
+| `zinc-400`     | `#a1a1aa` | Secondary text                          |
+| `zinc-500/600` | —         | Muted text / small labels               |
+| `accent`       | `#2F5FE0` | Solid button fill (contrasts with white text) |
+| `accent-text`  | `#6B93FF` | Text/links/icons on dark backgrounds    |
+| `pixel-yellow` | `#F5D033` | Highlight/selection only: hover corner-bracket, focus ring, "Popular" tier |
 
-`accent` dan `accent-text` sengaja dua shade berbeda dari warna yang sama:
-`accent` dipakai untuk fill tombol (kontras terhadap teks putih), `accent-text`
-dipakai untuk teks/link di atas background gelap. Keduanya sudah dicek lolos
-kontras WCAG AA (≥4.5:1).
+`accent` and `accent-text` are deliberately two shades of the same hue: `accent` fills
+buttons (contrasts against white text), `accent-text` is for text/links on dark
+backgrounds. Both are checked against WCAG AA contrast (≥4.5:1).
 
-### Font
+`pixel-yellow` is a second accent, added specifically for the pixel-art aesthetic
+(reference: retro-game selection cursors). It does **one job** in exactly three places:
+the 4 corner pixels on `ProjectCard` hover (`components/PixelCorners.tsx`), the
+`:focus-visible` outline site-wide, and the border + "Popular" tier badge on
+`ServiceCard`. It's not used for arbitrary category/status color-coding, same
+one-color-one-job rule as `accent`.
 
-- **Satu keluarga font:** [Geist](https://vercel.com/font) (dibuat oleh Vercel),
-  `GeistSans` untuk teks umum dan `GeistMono` untuk kode/angka teknis.
-- Hierarki dibentuk lewat ukuran dan berat huruf, bukan lewat font kedua.
-- Dimuat via package `geist` + `next/font` (zero layout shift, self-hosted, di-cache di edge).
+### Fonts
 
-### Komponen Utility
+Two pixel fonts, chosen for their respective legibility:
 
-| Class                 | Fungsi                                              |
-|-----------------------|------------------------------------------------------|
-| `.surface`             | Container dengan border tipis, dipakai hanya saat elevasi punya arti (pricing, project card) |
-| `.surface-interactive` | Tambahan hover state untuk `.surface` yang bisa diklik |
-| `.btn-primary`         | Tombol solid accent, radius 8px                    |
-| `.btn-secondary`       | Tombol outline, radius 8px                          |
-| `.tag`                 | Label kecil persegi (bukan pill), netral, untuk metadata yang genuinely enumerable (kategori, stack, topik) |
-| `.section-pad`         | Padding vertikal konsisten antar section            |
+- **Press Start 2P** (`font-pixel`) — headings (`h1`/`h2`/`h3` pick this up automatically
+  via base layer CSS), buttons, logo. **Never used for body text** since it becomes
+  unreadable below ~12px, and long strings get very wide per character.
+- **VT323** (`font-sans`, default) — all body text, nav, tags, labels. Still reads as
+  distinctly "pixel/terminal" but stays legible at small sizes, unlike Press Start 2P.
+- **Geist Mono** (`font-mono`) — the one exception: used specifically in `<code>` blocks
+  (vulnerability examples in the Security section), because precise monospace alignment
+  matters more there than the pixel aesthetic.
+
+Both are loaded via `@fontsource/press-start-2p` and `@fontsource/vt323` (self-hosted
+from npm), **not** `next/font/google` — deliberately, so the build never needs network
+access to `fonts.googleapis.com`. The `--font-press-start` and `--font-vt323` CSS
+variables are defined manually in `globals.css`, pointing at the font-family names those
+packages register.
+
+The root `<html>` font-size is bumped to 108% (`app/globals.css`) because VT323 has thin
+strokes, so Tailwind's whole `rem` scale grows proportionally without touching every
+individual `text-*` class.
+
+### Utility Components
+
+| Class                 | Purpose                                              |
+|-----------------------|--------------------------------------------------------|
+| `.surface`             | Container: border-2, hard-offset shadow (not blur), used only where elevation means something (pricing, project cards) |
+| `.surface-interactive` | Adds a hover state (translate + bigger shadow) for clickable `.surface` elements |
+| `.btn-primary`         | Solid accent button, white border, pixel shadow, "presses" (translate + shadow disappears) on `:active` |
+| `.btn-secondary`       | Outline button, smaller pixel shadow, same press behavior |
+| `.tag`                 | Small rectangular label, VT323 (not Press Start 2P, so it stays legible small) |
+| `.section-pad`         | Consistent vertical padding between sections            |
 
 ### Motion
 
-Scroll-reveal dan animasi expand/collapse pakai `framer-motion`, bukan CSS. Komponennya
-ada di `components/Reveal.tsx`:
+Scroll-reveal and expand/collapse animation use `framer-motion`, not CSS. The
+components live in `components/Reveal.tsx`:
 
-| Komponen               | Fungsi                                              |
-|-------------------------|------------------------------------------------------|
-| `<Reveal>`              | Satu elemen: fade + naik 10px sekali saat masuk viewport |
-| `<RevealGroup>` + `<RevealItem>` | Grid/list: children stagger otomatis (tidak perlu hitung delay manual per-item) |
+| Component               | Purpose                                              |
+|-------------------------|---------------------------------------------------------|
+| `<Reveal>`              | A single element: fade + rise 10px once, on entering the viewport |
+| `<RevealGroup>` + `<RevealItem>` | Grids/lists: children stagger automatically (no manual per-item delay math) |
 
-Semua menghormati `prefers-reduced-motion` lewat `useReducedMotion()`, animasi otomatis
-jadi instan kalau user set itu di sistem. Dipakai sengaja terbatas: reveal saat scroll,
-dan height-animation di expand/collapse case study `ProjectCard`. Hover tombol/nav/menu
-mobile tetap CSS transition biasa, tidak semua dipindah ke JS.
+Everything respects `prefers-reduced-motion` via `useReducedMotion()`, animation
+becomes instant automatically if the user has that set at the OS level. Used
+deliberately sparingly: scroll reveal, and the height animation on `ProjectCard`'s case
+study expand/collapse. Button/nav/mobile-menu hovers stay plain CSS transitions (with
+`steps()` timing for a "stepped," retro feel instead of a smooth ease), not everything
+moved to JS.
 
-### Radius (skala tetap, jangan dicampur)
+### Radius & Shadow
 
-| Ukuran | Token | Dipakai untuk        |
-|--------|-------|------------------------|
-| 6px    | `xs`  | Tag/label kecil        |
-| 8px    | `sm`  | Tombol, input          |
-| 12px   | `md`  | Card, container besar  |
+Radius is 0px on every element (`xs`/`sm`/`md` are all overridden to 0 in
+`tailwind.config.ts`, so any `rounded-*` class anywhere is automatically blocky, no
+need to hunt down each usage). Shadows use `shadow-pixel` / `shadow-pixel-sm`
+(hard-offset, not blur) instead of Tailwind's built-in `shadow-lg` and friends.
+
+### Why this reskin exists
+
+This is a large pivot away from the "premium minimal SaaS" system (Linear/Vercel/
+Stripe-coded) built earlier, at the explicit request of the project owner, who
+deliberately picked the "full pixel-art reskin" option from a set of more conservative
+alternatives (sharp corners only, a pixel accent on the logo only, etc). If you need to
+go back to the earlier direction, check the git history before this reskin, or ask for
+a manual rebuild — the two systems are different enough that they shouldn't be merged.
 
 ---
 
-## Arsitektur Komponen
+## Component Architecture
 
 ### Server Components (default, zero client JS)
 
@@ -267,45 +302,45 @@ mobile tetap CSS transition biasa, tidak semua dipindah ke JS.
 
 ### Client Components (`'use client'`)
 
-| Komponen      | Alasan butuh client                          |
+| Component     | Why it needs to be client                    |
 |---------------|----------------------------------------------|
 | `Reveal`      | `framer-motion` hooks (`useReducedMotion`, `whileInView`) |
-| `Navbar`      | `useState` untuk scroll state & mobile menu  |
-| `ProjectCard` | `useState` + `framer-motion` untuk expand/collapse animasi |
+| `Navbar`      | `useState` for scroll state & mobile menu    |
+| `ProjectCard` | `useState` + `framer-motion` for expand/collapse animation |
 
 ---
 
-## Menambahkan Proyek Baru
+## Adding a New Project
 
-1. Buka `data/projects.ts`
-2. Tambahkan object baru di array `projects`:
+1. Open `data/projects.ts`
+2. Add a new object to the `projects` array:
 
 ```typescript
 {
-  id: 'nama-project',          // lowercase, hyphen
-  title: 'Nama Proyek',
-  subtitle: 'Satu kalimat deskripsi',
-  category: 'Freelance',       // bebas
+  id: 'project-name',          // lowercase, hyphenated
+  title: 'Project Name',
+  subtitle: 'One-sentence description',
+  category: 'Freelance',       // your choice
   tags: ['Tag1', 'Tag2'],
   stack: ['Next.js', 'TypeScript', 'Tailwind'],
-  problem: 'Masalah yang diselesaikan.',
-  goal: 'Tujuan proyek.',
-  role: 'Apa yang kamu kerjakan.',
-  features: ['Fitur 1', 'Fitur 2'],
-  challenges: 'Tantangan teknis yang dihadapi.',
-  result: 'Hasil konkret.',
+  problem: 'The problem it solves.',
+  goal: "The project's goal.",
+  role: 'What you worked on.',
+  features: ['Feature 1', 'Feature 2'],
+  challenges: 'Technical challenges you ran into.',
+  result: 'The concrete result.',
   demoUrl: 'https://demo.vercel.app',
-  githubUrl: 'https://github.com/USERNAME/nama-project',
+  githubUrl: 'https://github.com/USERNAME/project-name',
 },
 ```
 
-3. Simpan. Komponen otomatis render tanpa perubahan lain.
+3. Save. The component renders it automatically, no other changes needed.
 
 ---
 
 ## Performance
 
-Build output yang dihasilkan:
+Build output:
 
 ```
 Page      : /
@@ -313,14 +348,14 @@ Size      : ~95 kB (JS) + ~22 kB (CSS)
 First Load: ~170 kB gzip
 ```
 
-Target Lighthouse score: Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95.
+Target Lighthouse scores: Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95.
 
 ---
 
-## Lisensi
+## License
 
-MIT, bebas digunakan, dimodifikasi, dan didistribusikan.
+MIT, free to use, modify, and distribute.
 
 ---
 
-*Dibuat dari Rp0. Deploy gratis. Skill nyata.*
+*Built from Rp0. Deployed for free. Real skill.*

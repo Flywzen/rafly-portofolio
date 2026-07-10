@@ -7,7 +7,7 @@ export interface CaseStudyField {
   content: React.ReactNode
 }
 
-const textCls = 'text-zinc-400 text-sm leading-relaxed'
+const textCls = 'text-zinc-400 text-base leading-relaxed'
 
 /**
  * One canonical row definition per project field. ProjectCard's expand
@@ -27,10 +27,10 @@ export function getCaseStudyFields(project: Project): CaseStudyField[] {
       id: 'features',
       label: 'Features',
       content: (
-        <ul className="space-y-1.5" aria-label="Fitur proyek">
+        <ul className="space-y-1.5" aria-label="Project features">
           {project.features.map((f) => (
-            <li key={f} className="flex gap-2 text-zinc-400 text-sm leading-relaxed">
-              <CheckCircle2 size={13} className="text-zinc-500 shrink-0 mt-0.5" aria-hidden="true" />
+            <li key={f} className="flex gap-2 text-zinc-400 text-base leading-relaxed">
+              <CheckCircle2 size={15} className="text-zinc-500 shrink-0 mt-0.5" aria-hidden="true" />
               {f}
             </li>
           ))}
@@ -46,7 +46,7 @@ export function getCaseStudyFields(project: Project): CaseStudyField[] {
 export function CaseStudyRow({ label, content }: CaseStudyField) {
   return (
     <div>
-      <p className="text-[11px] font-medium text-zinc-500 uppercase tracking-wide mb-1.5">
+      <p className="font-pixel text-[0.6rem] text-zinc-500 uppercase mb-2.5">
         {label}
       </p>
       {content}

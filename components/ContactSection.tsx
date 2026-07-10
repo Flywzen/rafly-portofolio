@@ -17,21 +17,21 @@ const contactLinks: ContactLink[] = [
     label: 'Email',
     description: EMAIL,
     href: `mailto:${EMAIL}`,
-    ariaLabel: 'Kirim email ke Rafly',
+    ariaLabel: 'Email Rafly',
   },
   {
     icon: Github,
     label: 'GitHub',
-    description: 'Lihat source code proyek',
+    description: 'View project source code',
     href: GITHUB_URL,
-    ariaLabel: 'Lihat profil GitHub Rafly',
+    ariaLabel: "View Rafly's GitHub profile",
   },
   {
     icon: Linkedin,
     label: 'LinkedIn',
-    description: 'Koneksi profesional',
+    description: 'Professional network',
     href: LINKEDIN_URL,
-    ariaLabel: 'Lihat profil LinkedIn Rafly',
+    ariaLabel: "View Rafly's LinkedIn profile",
   },
 ]
 
@@ -48,15 +48,15 @@ export default function ContactSection() {
         <RevealItem className="mb-10">
           <h2
             id="contact-heading"
-            className="font-semibold text-3xl sm:text-4xl md:text-5xl text-zinc-50 leading-tight mb-5 tracking-tight"
+            className="text-xl sm:text-2xl text-zinc-50 leading-[1.8] mb-6"
           >
-            Website Anda, mulai dari percakapan.
+            Your website starts with a conversation.
           </h2>
-          <p className="text-zinc-400 text-base max-w-xl mx-auto leading-relaxed">
-            Saya belum punya daftar klien untuk dipamerkan, karena saya baru mulai menerima
-            proyek profesional. Yang saya tawarkan: proses yang jelas, komunikasi cepat, dan
-            hasil yang bisa Anda cek sendiri di bagian Proyek. Ceritakan kebutuhan Anda, saya
-            akan tanyakan hal yang perlu ditanyakan.
+          <p className="text-zinc-400 text-lg max-w-xl mx-auto leading-relaxed">
+            I don&apos;t have a client list to show off yet, since I&apos;m just starting
+            to take on professional projects. What I do offer: a clear process, fast
+            communication, and results you can check for yourself in the Projects
+            section. Tell me what you need, and I&apos;ll ask the right questions.
           </p>
         </RevealItem>
 
@@ -66,7 +66,7 @@ export default function ContactSection() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary text-base py-3.5 px-7 inline-flex"
+            className="btn-primary py-3.5 px-7 inline-flex text-[0.75rem]"
             aria-label={`${CONTACT_CTA_LABEL} via WhatsApp`}
           >
             <MessageCircle size={18} aria-hidden="true" />
@@ -76,29 +76,29 @@ export default function ContactSection() {
         </RevealItem>
 
         <RevealItem>
-          <p className="text-zinc-500 text-xs mb-14">
-            Respons dalam 1-3 jam di jam aktif (08.00-21.00 WIB)
+          <p className="text-zinc-500 text-base mb-14">
+            Replies within 1-3 hours during active hours (8 AM-9 PM WIB)
           </p>
         </RevealItem>
 
         {/* Secondary links — flat, not boxed */}
         <RevealItem
-          className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-white/[0.08] border-t border-b border-white/[0.08]"
+          className="flex flex-col sm:flex-row divide-y-2 sm:divide-y-0 sm:divide-x-2 divide-white/20 border-t-2 border-b-2 border-white/20"
         >
-          <div className="flex flex-col sm:flex-row w-full" aria-label="Kontak alternatif">
+          <div className="flex flex-col sm:flex-row w-full" aria-label="Other ways to reach me">
             {contactLinks.map(({ icon: Icon, label, description, href, ariaLabel }) => (
               <a
                 key={label}
                 href={href}
                 target={href.startsWith('mailto') ? undefined : '_blank'}
                 rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                className="flex-1 flex items-center justify-center gap-2.5 py-5 px-4 hover:bg-white/[0.02] transition-colors duration-150"
+                className="flex-1 flex items-center justify-center gap-2.5 py-5 px-4 hover:bg-white/[0.04] transition-colors duration-150"
                 aria-label={ariaLabel}
               >
-                <Icon size={16} className="text-zinc-500 shrink-0" aria-hidden="true" />
+                <Icon size={18} className="text-zinc-500 shrink-0" aria-hidden="true" />
                 <span className="text-left">
-                  <span className="block font-medium text-zinc-50 text-sm">{label}</span>
-                  <span className="block text-zinc-500 text-xs">{description}</span>
+                  <span className="block text-zinc-50 text-base">{label}</span>
+                  <span className="block text-zinc-500 text-sm">{description}</span>
                 </span>
               </a>
             ))}

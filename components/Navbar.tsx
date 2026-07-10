@@ -11,16 +11,16 @@ interface NavLink {
 }
 
 const NAV_LINKS: NavLink[] = [
-  { label: 'Tentang',  href: '#about'    },
-  { label: 'Jasa',     href: '#services' },
-  { label: 'Proyek',   href: '#projects' },
+  { label: 'About',    href: '#about'    },
+  { label: 'Services', href: '#services' },
+  { label: 'Projects', href: '#projects' },
   { label: 'Security', href: '#security' },
-  { label: 'Kontak',   href: '#contact'  },
+  { label: 'Contact',  href: '#contact'  },
 ]
 
 /** Single source of truth for the "start a conversation" CTA label,
  *  used identically in the nav, hero, and contact section. */
-export const CONTACT_CTA_LABEL = 'Diskusi Website'
+export const CONTACT_CTA_LABEL = 'Discuss Your Website'
 
 function scrollToSection(href: string): void {
   const el = document.querySelector(href)
@@ -64,23 +64,23 @@ export default function Navbar() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-colors duration-200',
           scrolled
-            ? 'bg-zinc-950/90 backdrop-blur-md border-b border-white/[0.08]'
-            : 'bg-transparent border-b border-transparent',
+            ? 'bg-zinc-950/95 border-b-2 border-white/20'
+            : 'bg-transparent border-b-2 border-transparent',
         )}
       >
         <nav
           className="max-w-content mx-auto px-5 sm:px-8 flex items-center justify-between h-16"
-          aria-label="Navigasi utama"
+          aria-label="Main navigation"
         >
           {/* Logo */}
           <a
             href="#hero"
             onClick={(e) => handleNavClick(e, '#hero')}
             className="group flex items-center gap-2"
-            aria-label="Ke bagian atas"
+            aria-label="Back to top"
           >
-            <span className="font-semibold text-lg text-zinc-50">RF</span>
-            <span className="text-zinc-500 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <span className="font-pixel text-sm text-zinc-50">RF</span>
+            <span className="text-zinc-500 text-base opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               Rafly
             </span>
           </a>
@@ -92,7 +92,7 @@ export default function Navbar() {
                 <a
                   href={href}
                   onClick={(e) => handleNavClick(e, href)}
-                  className="text-zinc-400 hover:text-zinc-50 text-sm font-medium transition-colors duration-150"
+                  className="text-zinc-400 hover:text-zinc-50 text-base uppercase tracking-wide transition-colors duration-150"
                 >
                   {label}
                 </a>
@@ -105,7 +105,7 @@ export default function Navbar() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary hidden lg:inline-flex py-2 px-4 text-sm"
+            className="btn-primary hidden lg:inline-flex py-2 px-4 text-[0.6rem]"
           >
             {CONTACT_CTA_LABEL}
           </a>
@@ -115,7 +115,7 @@ export default function Navbar() {
             className="lg:hidden text-zinc-400 hover:text-zinc-50 transition-colors p-1 -mr-1"
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           >
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -124,7 +124,7 @@ export default function Navbar() {
         {/* Mobile drawer */}
         <div
           className={cn(
-            'lg:hidden transition-all duration-200 overflow-hidden bg-zinc-950/95 backdrop-blur-md border-b border-white/[0.08]',
+            'lg:hidden transition-all duration-200 overflow-hidden bg-zinc-950/95 border-b-2 border-white/20',
             menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0',
           )}
           aria-hidden={!menuOpen}
@@ -135,18 +135,18 @@ export default function Navbar() {
                 <a
                   href={href}
                   onClick={(e) => handleNavClick(e, href)}
-                  className="block py-2.5 text-zinc-400 hover:text-zinc-50 text-sm font-medium transition-colors duration-150"
+                  className="block py-2.5 text-zinc-400 hover:text-zinc-50 text-base uppercase tracking-wide transition-colors duration-150"
                 >
                   {label}
                 </a>
               </li>
             ))}
-            <li className="pt-3 mt-1 border-t border-white/[0.08]">
+            <li className="pt-3 mt-1 border-t-2 border-white/20">
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary text-sm w-full justify-center"
+                className="btn-primary text-[0.6rem] w-full justify-center"
               >
                 {CONTACT_CTA_LABEL}
               </a>

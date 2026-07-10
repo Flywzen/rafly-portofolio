@@ -15,13 +15,13 @@ export default function FeaturedProjects() {
         <Reveal className="mb-12">
           <h2
             id="projects-heading"
-            className="font-semibold text-3xl sm:text-4xl text-zinc-50 leading-tight mb-3 tracking-tight"
+            className="text-lg sm:text-xl text-zinc-50 leading-[1.8] mb-4"
           >
-            Proyek nyata, bukan latihan tutorial.
+            Real projects, not tutorial exercises.
           </h2>
-          <p className="text-zinc-400 text-base max-w-xl leading-relaxed">
-            Setiap proyek punya problem nyata, solusi yang dipikirkan, dan hasil yang bisa
-            diverifikasi. Buka case study untuk melihat proses lengkapnya.
+          <p className="text-zinc-400 text-lg max-w-xl leading-relaxed">
+            Every project has a real problem, a considered solution, and a result you
+            can verify. Open a case study to see the full process.
           </p>
         </Reveal>
 
@@ -36,8 +36,8 @@ export default function FeaturedProjects() {
 
         {/* Footer note */}
         <Reveal className="mt-10">
-          <p className="text-center text-zinc-500 text-xs">
-            Semua proyek di atas bisa dilihat source code-nya di{' '}
+          <p className="text-center text-zinc-500 text-base">
+            Source code for all of the above is on{' '}
             <a
               href="https://github.com/USERNAME"
               target="_blank"

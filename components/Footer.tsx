@@ -2,11 +2,11 @@ import { Github, Linkedin, MessageCircle } from 'lucide-react'
 import { GITHUB_URL, LINKEDIN_URL, WHATSAPP_URL } from '@/data/socialLinks'
 
 const footerLinks = [
-  { label: 'Tentang',  href: '#about'    },
-  { label: 'Jasa',     href: '#services' },
-  { label: 'Proyek',   href: '#projects' },
+  { label: 'About',    href: '#about'    },
+  { label: 'Services', href: '#services' },
+  { label: 'Projects', href: '#projects' },
   { label: 'Security', href: '#security' },
-  { label: 'Kontak',   href: '#contact'  },
+  { label: 'Contact',  href: '#contact'  },
 ]
 
 const socialIcons = [
@@ -19,15 +19,15 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-white/[0.08] py-10" aria-label="Footer">
+    <footer className="border-t-2 border-white/20 py-10" aria-label="Footer">
       <div className="max-w-content mx-auto px-5 sm:px-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
 
           {/* Brand */}
           <div>
-            <p className="font-semibold text-lg text-zinc-50 mb-1">RF</p>
-            <p className="text-zinc-500 text-xs">Muhammad Rafly Yahya Ramadhan</p>
-            <p className="text-zinc-500 text-xs mt-0.5">Informatika · ITERA · Lampung</p>
+            <p className="font-pixel text-sm text-zinc-50 mb-2">RF</p>
+            <p className="text-zinc-500 text-base">Muhammad Rafly Yahya Ramadhan</p>
+            <p className="text-zinc-500 text-base">Computer Science · ITERA · Lampung, Indonesia</p>
           </div>
 
           {/* Nav */}
@@ -35,7 +35,7 @@ export default function Footer() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2" role="list">
               {footerLinks.map(({ label, href }) => (
                 <li key={href}>
-                  <a href={href} className="text-xs text-zinc-500 hover:text-zinc-50 transition-colors duration-150">
+                  <a href={href} className="text-base uppercase tracking-wide text-zinc-500 hover:text-zinc-50 transition-colors duration-150">
                     {label}
                   </a>
                 </li>
@@ -52,20 +52,20 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="w-8 h-8 rounded-sm border border-white/[0.1] flex items-center justify-center text-zinc-500 hover:text-zinc-50 hover:border-white/[0.2] transition-colors duration-150"
+                className="w-9 h-9 border-2 border-white/20 flex items-center justify-center text-zinc-500 hover:text-zinc-50 hover:border-white/40 transition-colors duration-150"
               >
-                <Icon size={14} aria-hidden="true" />
+                <Icon size={15} aria-hidden="true" />
               </a>
             ))}
           </div>
 
         </div>
 
-        <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-zinc-500 text-xs">
+        <div className="mt-8 pt-6 border-t-2 border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-zinc-500 text-base">
             © {year} Rafly · Built with Next.js, TypeScript, Tailwind
           </p>
-          <p className="text-zinc-500 text-xs">
+          <p className="text-zinc-500 text-base">
             Deployed on{' '}
             <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-50 transition-colors duration-150">Vercel</a>
             {' · '}Source on{' '}

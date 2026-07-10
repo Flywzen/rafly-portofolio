@@ -32,17 +32,17 @@ function CaseStudyCard({ project }: { project: Project }) {
       aria-labelledby={`cs-title-${project.id}`}
     >
       {/* Header bar */}
-      <div className="px-7 py-5 border-b border-white/[0.08]">
+      <div className="px-7 py-5 border-b-2 border-white/20">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <span className="tag mb-2">{project.category}</span>
             <h3
               id={`cs-title-${project.id}`}
-              className="font-semibold text-zinc-50 text-xl leading-snug mt-2"
+              className="text-sm text-zinc-50 leading-[1.8] mt-2"
             >
               {project.title}
             </h3>
-            <p className="text-zinc-400 text-sm mt-1">{project.subtitle}</p>
+            <p className="text-zinc-400 text-base mt-1">{project.subtitle}</p>
           </div>
 
           <div className="flex gap-2.5 shrink-0">
@@ -51,7 +51,7 @@ function CaseStudyCard({ project }: { project: Project }) {
               target={demoReady ? '_blank' : undefined}
               rel={demoReady ? 'noopener noreferrer' : undefined}
               aria-disabled={!demoReady}
-              className={`btn-primary text-xs py-2 px-3 ${!demoReady ? 'opacity-40 pointer-events-none' : ''}`}
+              className={`btn-primary py-2 px-3 ${!demoReady ? 'opacity-40 pointer-events-none' : ''}`}
             >
               <ExternalLink size={13} aria-hidden="true" />
               {demoReady ? 'Live Demo' : 'Demo Soon'}
@@ -61,7 +61,7 @@ function CaseStudyCard({ project }: { project: Project }) {
               target={githubReady ? '_blank' : undefined}
               rel={githubReady ? 'noopener noreferrer' : undefined}
               aria-disabled={!githubReady}
-              className={`btn-secondary text-xs py-2 px-3 ${!githubReady ? 'opacity-40 pointer-events-none' : ''}`}
+              className={`btn-secondary py-2 px-3 ${!githubReady ? 'opacity-40 pointer-events-none' : ''}`}
             >
               <Github size={13} aria-hidden="true" />
               GitHub
@@ -72,13 +72,13 @@ function CaseStudyCard({ project }: { project: Project }) {
         {/* Stack tags */}
         <div className="flex flex-wrap gap-1.5 mt-4" aria-label="Tech stack">
           {project.stack.map((s) => (
-            <span key={s} className="tag text-[10px]">{s}</span>
+            <span key={s} className="tag text-sm">{s}</span>
           ))}
         </div>
       </div>
 
       {/* Case study body — every field, since there's no teaser above it */}
-      <div className="px-7 divide-y divide-white/[0.08]">
+      <div className="px-7 divide-y-2 divide-white/20">
         {getCaseStudyFields(project).map((field) => (
           <div key={field.id} className="py-5">
             <CaseStudyRow {...field} />
@@ -116,8 +116,8 @@ export default function CaseStudySection({
 
   if (items.length === 0) {
     return (
-      <p className="text-zinc-500 text-sm text-center py-10">
-        Proyek tidak ditemukan.
+      <p className="text-zinc-500 text-base text-center py-10">
+        Project not found.
       </p>
     )
   }
@@ -130,7 +130,7 @@ export default function CaseStudySection({
           <Reveal className="mb-12">
             <h2
               id="case-study-heading"
-              className="font-semibold text-3xl sm:text-4xl text-zinc-50 leading-tight tracking-tight"
+              className="text-lg sm:text-xl text-zinc-50 leading-[1.8]"
             >
               {heading}
             </h2>

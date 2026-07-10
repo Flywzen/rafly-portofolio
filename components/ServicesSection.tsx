@@ -16,13 +16,13 @@ export default function ServicesSection() {
         <Reveal className="mb-12">
           <h2
             id="services-heading"
-            className="font-semibold text-3xl sm:text-4xl text-zinc-50 leading-tight mb-3 tracking-tight"
+            className="text-lg sm:text-xl text-zinc-50 leading-[1.8] mb-4"
           >
-            Apa yang saya kerjakan
+            What I Do
           </h2>
-          <p className="text-zinc-400 text-base max-w-xl">
-            Harga di bawah adalah estimasi untuk proyek pemula. Scope dan kompleksitas
-            akan didiskusikan sebelum deal, tidak ada biaya tersembunyi.
+          <p className="text-zinc-400 text-lg max-w-xl">
+            Prices below are estimates for early-stage projects. Scope and complexity
+            get discussed before anything is final. No hidden fees.
           </p>
         </Reveal>
 
@@ -37,15 +37,15 @@ export default function ServicesSection() {
 
         {/* Disclaimer */}
         <Reveal className="mt-8">
-          <p className="text-center text-zinc-500 text-xs">
-            Harga bersifat estimasi, diskusi dulu, deal kemudian.{' '}
+          <p className="text-center text-zinc-500 text-base">
+            Prices are estimates. We talk first, agree after.{' '}
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-accent-text hover:underline"
             >
-              Tanya via WhatsApp
+              Ask on WhatsApp
             </a>
           </p>
         </Reveal>

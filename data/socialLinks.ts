@@ -13,7 +13,7 @@ export const socialLinks: SocialLink[] = [
   },
   {
     label: 'WhatsApp',
-    href: 'https://wa.me/628XXXXXXXXX?text=Halo%20Rafly%2C%20saya%20ingin%20diskusi%20tentang%20website',
+    href: 'https://wa.me/628XXXXXXXXX?text=Hi%20Rafly%2C%20I%20would%20like%20to%20discuss%20a%20website%20project',
     icon: 'whatsapp',
   },
   {
@@ -25,7 +25,7 @@ export const socialLinks: SocialLink[] = [
 
 // Used in multiple components — single source of truth
 export const WHATSAPP_URL =
-  'https://wa.me/628XXXXXXXXX?text=Halo%20Rafly%2C%20saya%20ingin%20diskusi%20tentang%20website'
+  'https://wa.me/628XXXXXXXXX?text=Hi%20Rafly%2C%20I%20would%20like%20to%20discuss%20a%20website%20project'
 
 export const GITHUB_URL   = 'https://github.com/USERNAME'
 export const LINKEDIN_URL = 'https://linkedin.com/in/USERNAME'

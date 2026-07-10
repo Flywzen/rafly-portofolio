@@ -1,12 +1,15 @@
 import type { Config } from 'tailwindcss'
 
 /**
- * Design tokens.
+ * Design tokens — pixel-art reskin.
  *
- * One accent color. Neutrals come from Tailwind's built-in zinc scale
- * (near-black / near-white, never pure #000 or #fff). Radius is a documented
- * three-step scale: xs for tags, sm for interactive controls, md for
- * containers. See globals.css for how these compose into components.
+ * Radius is 0 everywhere (blocky, no curves — that's the whole point).
+ * Shadows are hard-edged offsets instead of blur (pixelShadow.*), the
+ * classic "8-bit card" look. Two font families: pixelDisplay (Press Start
+ * 2P) for headings/buttons/logo only — it's unreadable below ~12px, so it
+ * never carries body text — and pixelBody (VT323) for everything else.
+ * Geist Mono is kept for actual <code> blocks, where exact monospace
+ * alignment matters more than the retro font.
  */
 const config: Config = {
   content: [
@@ -23,15 +26,29 @@ const config: Config = {
           /** Text/icons/links on dark backgrounds. Tuned so it clears 4.5:1 on zinc-950. */
           text: '#6B93FF',
         },
+        /**
+         * Second accent, used for exactly one job: highlight/selection —
+         * hover corner-brackets, focus ring, the "Populer" tier. Not used
+         * for arbitrary category color-coding; that's still one job per
+         * color, same rule as the blue accent.
+         */
+        'pixel-yellow': '#F5D033',
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-vt323)', 'monospace'],
+        pixel: ['var(--font-press-start)', 'monospace'],
         mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
-        xs: '6px',
-        sm: '8px',
-        md: '12px',
+        xs: '0px',
+        sm: '0px',
+        md: '0px',
+      },
+      boxShadow: {
+        pixel: '4px 4px 0 0 rgba(0,0,0,0.9)',
+        'pixel-sm': '3px 3px 0 0 rgba(0,0,0,0.9)',
+        'pixel-accent': '4px 4px 0 0 #2F5FE0',
+        'pixel-press': '1px 1px 0 0 rgba(0,0,0,0.9)',
       },
       keyframes: {
         fadeUp: {
@@ -40,7 +57,7 @@ const config: Config = {
         },
       },
       animation: {
-        'fade-up': 'fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'fade-up': 'fadeUp 0.5s steps(6) forwards',
       },
       maxWidth: {
         content: '1120px',
