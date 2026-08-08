@@ -1,79 +1,104 @@
 'use client'
 
-import { m, useReducedMotion, type Variants } from 'framer-motion'
+import { createContext, useContext, useEffect, useRef } from 'react'
+import anime from 'animejs'
+import { EASE_OUT, DURATION, REVEAL_DISTANCE } from '@/lib/motion'
 
-const EASE = [0.16, 1, 0.3, 1] as const
-const DISTANCE = 10
-const DURATION = 0.4
+/**
+ * Scroll-triggered reveal, powered by anime.js + IntersectionObserver.
+ *
+ * Kept the same public API as the previous framer-motion version
+ * (RevealGroup / RevealItem) on purpose: every section that already
+ * consumes this (HeroSection, FeaturedProjects, CybersecuritySection, …)
+ * needed zero changes when the animation engine underneath was swapped.
+ *
+ * RevealGroup registers its children via context and fires one
+ * anime.timeline() with staggered targets once the group scrolls into
+ * view — a single timeline reads as more coordinated than N independent
+ * animations racing each other, and it's the anime.js-native way to do
+ * what framer's `staggerChildren` did declaratively.
+ */
 
-const itemVariants: Variants = {
-  hidden:  { opacity: 0, y: DISTANCE },
-  visible: { opacity: 1, y: 0 },
-}
-
-interface RevealProps {
-  children: React.ReactNode
-  className?: string
-  /** Extra delay in seconds, for hand-placed sequencing outside a RevealGroup. */
-  delay?: number
-}
-
-/** A single element that fades/rises into view once, the first time it crosses the viewport. */
-export function Reveal({ children, className, delay = 0 }: RevealProps) {
-  const reduceMotion = useReducedMotion()
-
-  return (
-    <m.div
-      className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
-      variants={itemVariants}
-      transition={{ duration: reduceMotion ? 0 : DURATION, ease: EASE, delay: reduceMotion ? 0 : delay }}
-    >
-      {children}
-    </m.div>
-  )
-}
+const RevealGroupContext = createContext<{
+  register: (el: HTMLElement) => void
+} | null>(null)
 
 interface RevealGroupProps {
   children: React.ReactNode
   className?: string
-  /** Seconds between each child's start. */
+  /** Seconds between each child's start (kept in seconds for API parity; converted to ms internally). */
   stagger?: number
 }
 
-/** Wraps a set of RevealItem children and staggers their entrance automatically. */
 export function RevealGroup({ children, className, stagger = 0.08 }: RevealGroupProps) {
-  const reduceMotion = useReducedMotion()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const itemsRef = useRef<HTMLElement[]>([])
+  const played = useRef(false)
+
+  const register = (el: HTMLElement) => {
+    if (!itemsRef.current.includes(el)) itemsRef.current.push(el)
+  }
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const play = () => {
+      if (played.current) return
+      played.current = true
+
+      const targets = itemsRef.current
+      if (reduceMotion) {
+        anime.set(targets, { opacity: 1, translateY: 0 })
+        return
+      }
+
+      anime
+        .timeline({ easing: EASE_OUT })
+        .add({
+          targets,
+          opacity: [0, 1],
+          translateY: [REVEAL_DISTANCE, 0],
+          duration: DURATION.slow,
+          delay: anime.stagger(stagger * 1000),
+        })
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) play()
+      },
+      { threshold: 0, rootMargin: '-80px 0px -80px 0px' },
+    )
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [stagger])
 
   return (
-    <m.div
-      className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
-      variants={{
-        hidden: {},
-        visible: { transition: { staggerChildren: reduceMotion ? 0 : stagger } },
-      }}
-    >
-      {children}
-    </m.div>
+    <div ref={containerRef} className={className}>
+      <RevealGroupContext.Provider value={{ register }}>{children}</RevealGroupContext.Provider>
+    </div>
   )
 }
 
-/** One child of a RevealGroup. Must be a direct-ish descendant to inherit the stagger timing. */
+/**
+ * One child of a RevealGroup. Rendered pre-hidden (same on server and
+ * client, so no hydration flash) and registered with the parent timeline
+ * on mount; the timeline animates it back to visible once in view.
+ */
 export function RevealItem({ children, className }: { children: React.ReactNode; className?: string }) {
-  const reduceMotion = useReducedMotion()
+  const ctx = useContext(RevealGroupContext)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (ref.current && ctx) ctx.register(ref.current)
+  }, [ctx])
 
   return (
-    <m.div
-      className={className}
-      variants={itemVariants}
-      transition={{ duration: reduceMotion ? 0 : DURATION, ease: EASE }}
-    >
+    <div ref={ref} className={className} style={{ opacity: 0, transform: `translateY(${REVEAL_DISTANCE}px)` }}>
       {children}
-    </m.div>
+    </div>
   )
 }

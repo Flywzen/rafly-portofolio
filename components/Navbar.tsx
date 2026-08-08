@@ -1,33 +1,38 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { WHATSAPP_URL } from '@/data/socialLinks'
 import { cn } from '@/lib/utils'
 
 interface NavLink {
   label: string
-  href: string
+  /** Section id on the homepage, e.g. 'about' for '#about'. */
+  anchor: string
 }
 
 const NAV_LINKS: NavLink[] = [
-  { label: 'About',    href: '#about'    },
-  { label: 'Services', href: '#services' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Security', href: '#security' },
-  { label: 'Contact',  href: '#contact'  },
+  { label: 'Projects',   anchor: 'projects'   },
+  { label: 'Philosophy', anchor: 'philosophy' },
+  { label: 'About',      anchor: 'about'      },
+  { label: 'Contact',    anchor: 'contact'    },
 ]
 
-/** Single source of truth for the "start a conversation" CTA label,
- *  used identically in the nav, hero, and contact section. */
+/** Single source of truth for the WhatsApp CTA label, used on the nav
+ *  (only when already in the services journey) and on /services itself. */
 export const CONTACT_CTA_LABEL = 'Discuss Your Website'
 
-function scrollToSection(href: string): void {
-  const el = document.querySelector(href)
-  el?.scrollIntoView({ behavior: 'smooth' })
+function scrollToSection(id: string): void {
+  document.querySelector(`#${id}`)?.scrollIntoView({ behavior: 'smooth' })
 }
 
 export default function Navbar() {
+  const pathname = usePathname()
+  const isHome = pathname === '/'
+  const isServicesRoute = pathname.startsWith('/services')
+
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -46,26 +51,41 @@ export default function Navbar() {
     return () => observer.disconnect()
   }, [])
 
-  const handleNavClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  // Homepage sentinel doesn't exist on other routes — treat any non-home
+  // route as permanently "scrolled" so the nav background never sits
+  // transparent over page content that starts right at the top.
+  useEffect(() => {
+    if (!isHome) setScrolled(true)
+  }, [isHome])
+
+  const handleAnchorClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, anchor: string) => {
+      if (!isHome) return // let Link navigate to /#anchor normally
       e.preventDefault()
       setMenuOpen(false)
-      scrollToSection(href)
+      scrollToSection(anchor)
     },
-    [],
+    [isHome],
   )
+
+  // The persistent nav CTA respects the audience split: on /services it's
+  // the WhatsApp pitch (you're already in "hire me" mode there); anywhere
+  // else it's a plain, low-commitment link to the homepage Contact section.
+  const navCta = isServicesRoute
+    ? { label: CONTACT_CTA_LABEL, href: WHATSAPP_URL, external: true }
+    : { label: 'Contact', href: '/#contact', external: false }
 
   return (
     <>
-      {/* Invisible sentinel the observer above watches. Sits at the very top of the page. */}
-      <div ref={sentinelRef} aria-hidden="true" className="absolute top-0 h-px w-full" />
+      {/* Invisible sentinel the observer above watches. Sits at the very top of the homepage. */}
+      {isHome && <div ref={sentinelRef} aria-hidden="true" className="absolute top-0 h-px w-full" />}
 
       <header
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-colors duration-200',
           scrolled
-            ? 'bg-zinc-950/95 border-b-2 border-white/20'
-            : 'bg-transparent border-b-2 border-transparent',
+            ? 'bg-ink/95 border-b border-white/20'
+            : 'bg-transparent border-b border-transparent',
         )}
       >
         <nav
@@ -73,46 +93,63 @@ export default function Navbar() {
           aria-label="Main navigation"
         >
           {/* Logo */}
-          <a
-            href="#hero"
-            onClick={(e) => handleNavClick(e, '#hero')}
-            className="group flex items-center gap-2"
-            aria-label="Back to top"
-          >
-            <span className="font-pixel text-sm text-zinc-50">RF</span>
-            <span className="text-zinc-500 text-base opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <Link href="/" className="group flex items-center gap-2" aria-label="Rafly, home">
+            <span className="font-display italic text-lg text-paper">RF</span>
+            <span className="text-paper0 text-base opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               Rafly
             </span>
-          </a>
+          </Link>
 
           {/* Desktop links */}
-          <ul className="hidden lg:flex items-center gap-6" role="list">
-            {NAV_LINKS.map(({ label, href }) => (
-              <li key={href}>
-                <a
-                  href={href}
-                  onClick={(e) => handleNavClick(e, href)}
-                  className="text-zinc-400 hover:text-zinc-50 text-base uppercase tracking-wide transition-colors duration-150"
+          <ul className="hidden lg:flex items-center gap-5" role="list">
+            {NAV_LINKS.map(({ label, anchor }) => (
+              <li key={anchor}>
+                <Link
+                  href={`/#${anchor}`}
+                  onClick={(e) => handleAnchorClick(e, anchor)}
+                  className="text-paper/60 hover:text-paper text-base uppercase tracking-wide transition-colors duration-150"
                 >
                   {label}
-                </a>
+                </Link>
               </li>
             ))}
+            <li>
+              <Link
+                href="/services"
+                className={cn(
+                  'text-base uppercase tracking-wide transition-colors duration-150',
+                  isServicesRoute ? 'text-signal' : 'text-paper/60 hover:text-paper',
+                )}
+                aria-current={isServicesRoute ? 'page' : undefined}
+              >
+                Services
+              </Link>
+            </li>
           </ul>
 
           {/* Desktop CTA */}
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary hidden lg:inline-flex py-2 px-4 text-[0.6rem]"
-          >
-            {CONTACT_CTA_LABEL}
-          </a>
+          {navCta.external ? (
+            <a
+              href={navCta.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary hidden lg:inline-flex py-2 px-4 text-sm"
+            >
+              {navCta.label}
+            </a>
+          ) : (
+            <Link
+              href={navCta.href}
+              onClick={(e) => isHome && handleAnchorClick(e, 'contact')}
+              className="btn-primary hidden lg:inline-flex py-2 px-4 text-sm"
+            >
+              {navCta.label}
+            </Link>
+          )}
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden text-zinc-400 hover:text-zinc-50 transition-colors p-1 -mr-1"
+            className="lg:hidden text-paper/60 hover:text-paper transition-colors p-1 -mr-1"
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -124,32 +161,55 @@ export default function Navbar() {
         {/* Mobile drawer */}
         <div
           className={cn(
-            'lg:hidden transition-all duration-200 overflow-hidden bg-zinc-950/95 border-b-2 border-white/20',
+            'lg:hidden transition-all duration-200 overflow-hidden bg-ink/95 border-b border-white/20',
             menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0',
           )}
           aria-hidden={!menuOpen}
         >
           <ul className="px-5 py-4 flex flex-col gap-0.5" role="list">
-            {NAV_LINKS.map(({ label, href }) => (
-              <li key={href}>
-                <a
-                  href={href}
-                  onClick={(e) => handleNavClick(e, href)}
-                  className="block py-2.5 text-zinc-400 hover:text-zinc-50 text-base uppercase tracking-wide transition-colors duration-150"
+            {NAV_LINKS.map(({ label, anchor }) => (
+              <li key={anchor}>
+                <Link
+                  href={`/#${anchor}`}
+                  onClick={(e) => handleAnchorClick(e, anchor)}
+                  className="block py-2.5 text-paper/60 hover:text-paper text-base uppercase tracking-wide transition-colors duration-150"
                 >
                   {label}
-                </a>
+                </Link>
               </li>
             ))}
-            <li className="pt-3 mt-1 border-t-2 border-white/20">
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary text-[0.6rem] w-full justify-center"
+            <li>
+              <Link
+                href="/services"
+                onClick={() => setMenuOpen(false)}
+                className={cn(
+                  'block py-2.5 text-base uppercase tracking-wide transition-colors duration-150',
+                  isServicesRoute ? 'text-signal' : 'text-paper/60 hover:text-paper',
+                )}
+                aria-current={isServicesRoute ? 'page' : undefined}
               >
-                {CONTACT_CTA_LABEL}
-              </a>
+                Services
+              </Link>
+            </li>
+            <li className="pt-3 mt-1 border-t border-white/20">
+              {navCta.external ? (
+                <a
+                  href={navCta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary text-sm w-full justify-center"
+                >
+                  {navCta.label}
+                </a>
+              ) : (
+                <Link
+                  href={navCta.href}
+                  onClick={(e) => isHome && handleAnchorClick(e, 'contact')}
+                  className="btn-primary text-sm w-full justify-center"
+                >
+                  {navCta.label}
+                </Link>
+              )}
             </li>
           </ul>
         </div>

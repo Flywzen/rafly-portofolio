@@ -19,11 +19,11 @@ import { ExternalLink, Github } from 'lucide-react'
 import type { Project } from '@/types'
 import { projects as allProjects } from '@/data/projects'
 import { getCaseStudyFields, CaseStudyRow } from '@/components/CaseStudyFields'
-import { Reveal, RevealGroup, RevealItem } from '@/components/Reveal'
+import { RevealGroup, RevealItem } from '@/components/Reveal'
+import { getProjectLinkStatus } from '@/lib/project-links'
 
 function CaseStudyCard({ project }: { project: Project }) {
-  const demoReady   = !project.demoUrl.includes('your-demo')
-  const githubReady = !project.githubUrl.includes('USERNAME')
+  const { demoReady, githubReady } = getProjectLinkStatus(project)
 
   return (
     <article
@@ -32,17 +32,17 @@ function CaseStudyCard({ project }: { project: Project }) {
       aria-labelledby={`cs-title-${project.id}`}
     >
       {/* Header bar */}
-      <div className="px-7 py-5 border-b-2 border-white/20">
+      <div className="px-7 py-5 border-b border-white/20">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <span className="tag mb-2">{project.category}</span>
             <h3
               id={`cs-title-${project.id}`}
-              className="text-sm text-zinc-50 leading-[1.8] mt-2"
+              className="text-xl text-paper leading-snug mt-2"
             >
               {project.title}
             </h3>
-            <p className="text-zinc-400 text-base mt-1">{project.subtitle}</p>
+            <p className="text-paper/60 text-base mt-1">{project.subtitle}</p>
           </div>
 
           <div className="flex gap-2.5 shrink-0">
@@ -78,7 +78,7 @@ function CaseStudyCard({ project }: { project: Project }) {
       </div>
 
       {/* Case study body — every field, since there's no teaser above it */}
-      <div className="px-7 divide-y-2 divide-white/20">
+      <div className="px-7 divide-y divide-white/20">
         {getCaseStudyFields(project).map((field) => (
           <div key={field.id} className="py-5">
             <CaseStudyRow {...field} />
@@ -116,7 +116,7 @@ export default function CaseStudySection({
 
   if (items.length === 0) {
     return (
-      <p className="text-zinc-500 text-base text-center py-10">
+      <p className="text-paper0 text-base text-center py-10">
         Project not found.
       </p>
     )
@@ -127,14 +127,14 @@ export default function CaseStudySection({
       <div className="max-w-4xl mx-auto px-5 sm:px-8">
 
         {items.length > 1 && (
-          <Reveal className="mb-12">
+          <div className="mb-12">
             <h2
               id="case-study-heading"
-              className="text-lg sm:text-xl text-zinc-50 leading-[1.8]"
+              className="text-2xl sm:text-3xl text-paper leading-[1.15]"
             >
               {heading}
             </h2>
-          </Reveal>
+          </div>
         )}
 
         <RevealGroup className="space-y-8">

@@ -1,15 +1,24 @@
 import type { Config } from 'tailwindcss'
 
 /**
- * Design tokens — pixel-art reskin.
+ * Design tokens — "Ink & Signal".
  *
- * Radius is 0 everywhere (blocky, no curves — that's the whole point).
- * Shadows are hard-edged offsets instead of blur (pixelShadow.*), the
- * classic "8-bit card" look. Two font families: pixelDisplay (Press Start
- * 2P) for headings/buttons/logo only — it's unreadable below ~12px, so it
- * never carries body text — and pixelBody (VT323) for everything else.
- * Geist Mono is kept for actual <code> blocks, where exact monospace
- * alignment matters more than the retro font.
+ * Redesign from the previous pixel/CRT identity. Off-black ink background,
+ * warm off-white text, one loud accent (signal lime) used exclusively for
+ * primary actions and motion highlights, one warm accent (coral) reserved
+ * for the same single job the old pixel-yellow had: "this is interactive /
+ * this is now focused" — still one job per color.
+ *
+ * Radius is still 0 — that survives the redesign, it reads as precise and
+ * intentional independent of any pixel theming. Shadows move from hard
+ * black offsets to a soft directional glow in the accent color: signal,
+ * not game-jam.
+ *
+ * Typography: Fraunces (variable, optical-size aware) carries display/
+ * headings — it has weight and personality at large sizes. Inter carries
+ * body copy — quiet, legible, gets out of the way. Geist Mono is kept for
+ * tags, labels, and the logo mark, where a mono texture still earns its
+ * place.
  */
 const config: Config = {
   content: [
@@ -20,23 +29,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        ink: {
+          DEFAULT: '#0A0A0C',
+          raised: '#141417',
+        },
+        paper: '#F3F1EA',
         accent: {
-          /** Solid fills (buttons). Tuned so white text clears 4.5:1. */
-          DEFAULT: '#2F5FE0',
-          /** Text/icons/links on dark backgrounds. Tuned so it clears 4.5:1 on zinc-950. */
-          text: '#6B93FF',
+          /** Signal lime — primary actions, links on hover, motion highlights. */
+          DEFAULT: '#C9F31D',
+          /** Ink-on-lime clears 4.5:1; this is what sits on top of the fill. */
+          ink: '#0A0A0C',
+          /** Inline text/link use on dark backgrounds — same hue, tuned for reading, not fills. */
+          text: '#D7F157',
         },
         /**
          * Second accent, used for exactly one job: highlight/selection —
-         * hover corner-brackets, focus ring, the "Populer" tier. Not used
-         * for arbitrary category color-coding; that's still one job per
-         * color, same rule as the blue accent.
+         * hover corner-marks, focus ring, the "Popular" tier. Not used for
+         * arbitrary category color-coding.
          */
-        'pixel-yellow': '#F5D033',
+        signal: '#FF5A3C',
       },
       fontFamily: {
-        sans: ['var(--font-vt323)', 'monospace'],
-        pixel: ['var(--font-press-start)', 'monospace'],
+        sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui'],
+        /** Headings + display numerals only. */
+        display: ['var(--font-fraunces)', 'ui-serif', 'Georgia', 'serif'],
         mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
@@ -45,19 +61,19 @@ const config: Config = {
         md: '0px',
       },
       boxShadow: {
-        pixel: '4px 4px 0 0 rgba(0,0,0,0.9)',
-        'pixel-sm': '3px 3px 0 0 rgba(0,0,0,0.9)',
-        'pixel-accent': '4px 4px 0 0 #2F5FE0',
-        'pixel-press': '1px 1px 0 0 rgba(0,0,0,0.9)',
+        signal: '0 6px 24px -4px rgba(201, 243, 29, 0.25)',
+        'signal-sm': '0 2px 10px -2px rgba(201, 243, 29, 0.2)',
+        'signal-press': 'none',
+        ring: '0 0 0 1px rgba(243, 241, 234, 0.08)',
       },
       keyframes: {
         fadeUp: {
-          '0%': { opacity: '0', transform: 'translateY(12px)' },
+          '0%': { opacity: '0', transform: 'translateY(14px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
       animation: {
-        'fade-up': 'fadeUp 0.5s steps(6) forwards',
+        'fade-up': 'fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards',
       },
       maxWidth: {
         content: '1120px',

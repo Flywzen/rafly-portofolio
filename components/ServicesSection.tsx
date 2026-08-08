@@ -21,8 +21,8 @@ export default function ServicesSection() {
             What I Do
           </h2>
           <p className="text-zinc-400 text-lg max-w-xl">
-            Prices below are estimates for early-stage projects. Scope and complexity
-            get discussed before anything is final. No hidden fees.
+            Prices below are starting estimates. We&apos;ll nail down scope before
+            anything&apos;s final, and there are no surprise charges after.
           </p>
         </Reveal>
 

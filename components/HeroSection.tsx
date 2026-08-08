@@ -1,7 +1,6 @@
-import { ArrowDown } from 'lucide-react'
-import { WHATSAPP_URL } from '@/data/socialLinks'
-import { CONTACT_CTA_LABEL } from '@/components/Navbar'
+import { ArrowRight } from 'lucide-react'
 import { RevealGroup, RevealItem } from '@/components/Reveal'
+import SignatureSpiral from '@/components/SignatureSpiral'
 
 export default function HeroSection() {
   return (
@@ -10,34 +9,37 @@ export default function HeroSection() {
       aria-label="Introduction"
       className="relative flex flex-col justify-center pt-24 pb-16 min-h-[80dvh]"
     >
-      <RevealGroup className="max-w-content mx-auto px-5 sm:px-8 w-full" stagger={0.1}>
-        {/* Headline */}
-        <RevealItem>
-          <h1 className="leading-[1.7] mb-8 text-lg sm:text-xl lg:text-2xl text-zinc-50 max-w-2xl">
-            A website that actually works for your business.
-          </h1>
-        </RevealItem>
+      <div className="relative max-w-content mx-auto px-5 sm:px-8 w-full">
+        <RevealGroup stagger={0.1}>
+          {/* Headline */}
+          <RevealItem>
+            <h1 className="leading-[1.05] mb-8 text-3xl sm:text-4xl lg:text-5xl text-paper max-w-2xl">
+              I build software that works today, and holds up a year from now.
+            </h1>
+          </RevealItem>
 
-        {/* Sub */}
-        <RevealItem>
-          <p className="text-zinc-400 text-lg sm:text-xl max-w-xl leading-relaxed mb-10">
-            I&apos;m Rafly, a Computer Science student at ITERA. I build websites for
-            small businesses and personal portfolios that are fast, clean, and actually
-            get used.
-          </p>
-        </RevealItem>
+          {/* Sub */}
+          <RevealItem>
+            <p className="text-paper/60 text-lg sm:text-xl max-w-xl leading-relaxed mb-10">
+              Rafly, Computer Science student at ITERA. Real projects below, with the
+              problems I ran into and how I solved them.
+            </p>
+          </RevealItem>
 
-        {/* CTAs */}
-        <RevealItem className="flex flex-wrap gap-3">
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
-            {CONTACT_CTA_LABEL}
-          </a>
-          <a href="#projects" className="btn-secondary">
-            View Projects
-            <ArrowDown size={16} aria-hidden="true" />
-          </a>
-        </RevealItem>
-      </RevealGroup>
+          {/* CTAs */}
+          <RevealItem className="flex flex-wrap gap-3">
+            <a href="#projects" className="btn-primary">
+              View Projects
+              <ArrowRight size={16} aria-hidden="true" />
+            </a>
+            <a href="#contact" className="btn-secondary">
+              Get in Touch
+            </a>
+          </RevealItem>
+        </RevealGroup>
+
+        <SignatureSpiral />
+      </div>
     </section>
   )
 }

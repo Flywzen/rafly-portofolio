@@ -1,18 +1,28 @@
 import type { Metadata, Viewport } from 'next'
-import '@fontsource/press-start-2p'
-import '@fontsource/vt323'
+import '@fontsource-variable/fraunces'
+import '@fontsource-variable/fraunces/wght-italic.css'
+import '@fontsource/inter/400.css'
+import '@fontsource/inter/500.css'
+import '@fontsource/inter/600.css'
 import { GeistMono } from 'geist/font/mono'
-import MotionProvider from '@/components/MotionProvider'
+import BackgroundSystem from '@/components/BackgroundSystem'
+import CustomCursor from '@/components/CustomCursor'
+import IntroCrawl from '@/components/IntroCrawl'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Rafly. Web Developer & UI/UX',
+  title: {
+    default: 'Rafly, Software Engineer',
+    template: '%s, Rafly',
+  },
   description:
-    "I'm Rafly, a web developer and Computer Science student at ITERA. I build small business websites, company profiles, and personal portfolios that are fast, clean, and ready for real use.",
+    "I'm Rafly, a Computer Science student at ITERA. I build software and study how it breaks, from the browser down to the request layer.",
   keywords: [
-    'web developer indonesia',
-    'freelance web developer lampung',
-    'small business website services',
+    'software engineer indonesia',
+    'web developer lampung',
+    'frontend engineer portfolio',
     'portfolio rafly',
     'computer science itera',
     'next.js developer',
@@ -21,15 +31,15 @@ export const metadata: Metadata = {
   authors: [{ name: 'Muhammad Rafly Yahya Ramadhan' }],
   creator: 'Muhammad Rafly Yahya Ramadhan',
   openGraph: {
-    title: 'Rafly. Web Developer & UI/UX',
-    description: "A website that doesn't just look good. It works for your business.",
+    title: 'Rafly, Software Engineer',
+    description: 'I build software and study how it breaks.',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rafly. Web Developer & UI/UX',
-    description: "A website that doesn't just look good. It works for your business.",
+    title: 'Rafly, Software Engineer',
+    description: 'I build software and study how it breaks.',
   },
   robots: { index: true, follow: true },
 }
@@ -37,7 +47,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#09090b',
+  themeColor: '#0A0A0C',
 }
 
 export default function RootLayout({
@@ -45,8 +55,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={GeistMono.variable}>
-      <body className="bg-zinc-950 text-zinc-50 font-sans antialiased">
-        <MotionProvider>{children}</MotionProvider>
+      <body className="bg-ink text-paper font-sans antialiased">
+        <IntroCrawl />
+        <CustomCursor />
+        <BackgroundSystem />
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   )

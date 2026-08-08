@@ -8,22 +8,28 @@ export const projects: Project[] = [
     category: 'Personal Project',
     tags: ['Storytelling', 'Personal'],
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
+    context:
+      "A personal project for my father's 50th birthday. Family was spread across different cities and couldn't gather in person.",
     problem:
-      "A WhatsApp message felt too small for my father's 50th birthday. Family was spread across different cities and couldn't gather in person.",
-    goal:
-      'A personal website accessible anytime, with a family photo gallery, an open letter, and a real-time age counter.',
-    role: 'Solo developer: concept, design, development, deployment.',
-    features: [
-      'Real-time age counter (days, hours, minutes, seconds)',
-      'Family photo gallery with lightbox',
-      'An open letter, set in comfortable, readable typography',
-      'Shareable via a short link',
-      'Mobile-first, fast to load',
+      'A WhatsApp message felt too small for the occasion, and there was no single place for family to see photos, read messages, and mark the day together.',
+    approach:
+      'A personal website accessible anytime, built around a real-time age counter and a family gallery, simple enough to finish before the actual date.',
+    architectureDecisions: [
+      'Vite over Next.js: the site is fully static and client-only, so there was no server-rendering need, and I wanted a build I could deploy anywhere without hosting decisions.',
+      'The age counter is a single custom hook, not a date library. The math (days, hours, minutes, seconds since a fixed timestamp) is simple enough that a dependency would have been overhead for one calculation.',
     ],
-    challenges:
-      'Building an accurate age counter from a birth date and time without an external library, while keeping the bundle small.',
-    result:
+    technicalChallenges:
+      'Keeping the age counter accurate across time zones and DST without a library, while keeping the bundle small enough to load instantly on a phone at a family gathering.',
+    tradeoffs: [
+      'No CMS. Content is hardcoded in one data file, meaning any change needs a redeploy. Fine for a single-occasion page with one audience, not a decision I would repeat for a site anyone else needed to edit.',
+      'No analytics. I did not want to add tracking to a page built for family, even though it meant I could not measure how long people stayed.',
+    ],
+    outcome:
       'Live on the day itself. Family in three different cities visited and left messages at the same time.',
+    lessonsLearned:
+      "The hardest part was not the countdown logic, it was deciding what not to build. I cut a comment wall and photo uploads because they meant handling user input and moderation for a page meant to go live once.",
+    ifRebuiltToday:
+      'I would use Next.js instead of Vite, for the built-in Image component. The family photos were the one part of the original build that never loaded well on a slow connection.',
     demoUrl: 'https://your-demo.vercel.app',
     githubUrl: 'https://github.com/USERNAME/birthday-dad',
     // imageUrl: '/images/birthday-dad.png',  <- uncomment + add file after taking a screenshot
@@ -35,23 +41,28 @@ export const projects: Project[] = [
     category: 'Civic / Community Service',
     tags: ['Public', 'Information'],
     stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Vercel'],
+    context:
+      'Built during my community service placement (KKN), a mandatory Indonesian university program where students spend time supporting a local community.',
     problem:
-      'The village where I completed my community service placement (KKN) had no digital presence residents or outsiders could use to learn about the village, read news, or find services.',
-    goal:
-      "A village information website that's easy to manage, fast on weak connections, and doubles as proof of the placement's contribution.",
-    role: 'Solo developer, from wireframe to deployment.',
-    features: [
-      'Village profile: history, vision and mission, government structure',
-      'News and announcements',
-      'Basic demographic data',
-      'Location map via embedded Google Maps',
-      'Photo gallery of village activities',
-      'Contact info and resident services',
+      'The village had no digital presence. Residents and outsiders had no way to look up basic information about it online, and the staff had no technical background to run one.',
+    approach:
+      'A village information website simple enough for non-technical staff to update themselves, and fast even on weak connections, built to outlast my time there.',
+    architectureDecisions: [
+      'Static generation instead of a database-backed CMS. The village has no dedicated IT support, so "nothing to maintain" mattered more than "editable from anywhere."',
+      'Content lives in one typed data file instead of a headless CMS like Sanity. A CMS would have meant another account and another login to explain to staff after I left.',
     ],
-    challenges:
-      'Designing it so non-technical village staff could understand the content without manual updates. Solution: content managed through a simple TypeScript/JSON file.',
-    result:
-      "Live, used as a reference in the placement's final report, and handed over to the village head.",
+    technicalChallenges:
+      'Designing content so non-technical staff could understand and eventually touch it without breaking the site, without access to a real content-editing workflow.',
+    tradeoffs: [
+      'Editing content means editing a TypeScript file directly, a real barrier for someone without a dev background. I traded ease-of-editing for zero ongoing hosting cost and nothing that could break after I left.',
+      'No admin dashboard. Building one would have taken longer than the rest of the project combined, for a site that gets updated a few times a month at most.',
+    ],
+    outcome:
+      "Live, and handed over to the village head. It's referenced in the placement's final report.",
+    lessonsLearned:
+      "I originally planned a full CMS. Talking to the village staff first, before writing code, saved me from building something they would never use. The right technical decision came from a conversation, not a framework comparison.",
+    ifRebuiltToday:
+      'I would still skip a full CMS, but add a small password-protected form for the village staff to edit specific text fields, without touching code or a dashboard built for developers.',
     demoUrl: 'https://your-demo.vercel.app',
     githubUrl: 'https://github.com/USERNAME/desa-kkn',
     // imageUrl: '/images/desa-kkn.png',
@@ -63,23 +74,28 @@ export const projects: Project[] = [
     category: 'Web App',
     tags: ['Productivity', 'Personal'],
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'LocalStorage'],
+    context:
+      'A personal tool, built to solve my own problem before it was built to be a portfolio piece.',
     problem:
-      'My notes on life were scattered across Notes, WhatsApp messages to myself, a physical notebook, and spreadsheets that never talked to each other.',
-    goal:
-      'One minimal app for a daily journal, tracking finances, building routines, and recording life milestones.',
-    role: 'Solo developer and product designer.',
-    features: [
-      'Daily journal with lightweight markdown',
-      'Finance tracking: income, expenses, balance',
-      'Routine tracker with a streak counter',
-      'Milestone board for bigger goals',
-      'Data stored locally, no account, no server',
-      'Dark mode by default',
+      'My notes on life were scattered across four different apps and a notebook, none of them talking to each other.',
+    approach:
+      'One minimal app to keep it all in one place: journal, finances, routines, with data staying local instead of on a server.',
+    architectureDecisions: [
+      'LocalStorage for the initial version, migrated the write path to IndexedDB once journal entries got large enough that synchronous LocalStorage writes started blocking the UI on save.',
+      'Plain React Context plus useReducer, not Redux or Zustand. One user, no server sync, so the cross-component coordination problem a state library solves did not exist here.',
     ],
-    challenges:
-      'Designing state management that stayed reliable without Redux, and making sure local data survived a browser clear (IndexedDB fallback).',
-    result:
-      'MVP live and self-used for 30+ days. Now doubles as a demo of full frontend development ability.',
+    technicalChallenges:
+      'Keeping state updates predictable without a state-management library, and making sure local data survived a browser cache clear (it mostly does now, via the IndexedDB migration above).',
+    tradeoffs: [
+      'All data lives in the browser, no cross-device sync, on purpose. The moment data leaves the device it needs a server, auth, and a privacy policy, for a journal app solving my own problem first.',
+      'No export or import yet, so a cleared browser cache is unrecoverable. That is the direct cost of the local-only decision above, and the next thing worth building if this became more than a personal tool.',
+    ],
+    outcome:
+      "MVP live. I've used it myself for 30+ days, and it now doubles as a demo of full frontend development ability.",
+    lessonsLearned:
+      'I underestimated how much of "state management" comes down to "deciding what not to sync." Once I stopped trying to keep every piece of state consistent everywhere, the code got simpler.',
+    ifRebuiltToday:
+      'I would start with IndexedDB from day one instead of migrating into it partway through. I know the storage requirements upfront now, and the migration itself was the most fragile part of the build.',
     demoUrl: 'https://your-demo.vercel.app',
     githubUrl: 'https://github.com/USERNAME/kiroku',
     // imageUrl: '/images/kiroku.png',
@@ -91,22 +107,28 @@ export const projects: Project[] = [
     category: 'Freelance Demo',
     tags: ['Small Business', 'Demo', 'Freelance'],
     stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Vercel'],
+    context:
+      'A demo built to show local small business owners what a dedicated page could do beyond an Instagram feed.',
     problem:
-      'Local small businesses rely on Instagram to sell, but have no page that shows products, testimonials, and a call to action in one structured place.',
-    goal:
-      'A single-page landing site that helps turn visitors into buyers: fast, mobile-first, easy to update.',
-    role: 'Web developer + basic content consultant.',
-    features: [
-      'Hero section with product photos and a WhatsApp CTA',
-      'Featured products section with pricing',
-      'Customer testimonials',
-      'Short FAQ',
-      'Footer with contact info and location',
+      "There's no single page that pulls the pitch together: products, proof, and a way to act on it, in one structured place.",
+    approach:
+      'A single-page landing site that helps turn visitors into buyers, fast and easy for a non-technical owner to keep updated.',
+    architectureDecisions: [
+      'One static page, no client-side routing. A multi-page site would have meant more for the owner to maintain and more clicks between a visitor and the WhatsApp button.',
+      "Images through Next.js's built-in Image component, not a third-party CDN. For a single-owner landing page, Vercel's built-in optimization was enough, and one less service to configure and pay for.",
     ],
-    challenges:
-      'Convincing the client that conversion depends on speed and message clarity, not feature count.',
-    result:
-      'The live demo is now used as a reference when pitching to other small businesses. Positive response from 3 prospective clients.',
+    technicalChallenges:
+      'Convincing the client that conversion depends on speed and message clarity, not feature count, then proving it by shipping the plainer version first.',
+    tradeoffs: [
+      'No CMS, so updating product photos means sending me a message. I chose that over a dashboard a non-technical owner could misconfigure, at the cost of me being a bottleneck for updates.',
+      'No product filtering or search. The catalog was small enough that scrolling was faster to build, and faster to use, than a filter UI would have been.',
+    ],
+    outcome:
+      'I now use the live demo as a reference when pitching to other small businesses. 3 prospective clients responded well.',
+    lessonsLearned:
+      "The client's first request was a photo carousel. I talked them out of it: one well-chosen photo per product loaded faster and tested better than a carousel, and it was one less thing to break on mobile.",
+    ifRebuiltToday:
+      'I would add the one thing I cut for scope: a lightweight way for the owner to swap product photos without messaging me. A Git-based CMS would remove that bottleneck without adding a database to maintain.',
     demoUrl: 'https://your-demo.vercel.app',
     githubUrl: 'https://github.com/USERNAME/umkm-landing',
     // imageUrl: '/images/umkm-landing.png',

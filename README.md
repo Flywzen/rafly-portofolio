@@ -13,6 +13,7 @@
 | Language     | TypeScript (strict)                     |
 | Styling      | Tailwind CSS v3                         |
 | Motion       | framer-motion (scroll-reveal + expand/collapse only) |
+| Testing      | Vitest (pure functions only, no DOM)    |
 | Icons        | Lucide React                            |
 | Fonts        | Press Start 2P + VT323 (@fontsource, self-hosted) + Geist Mono (next/font, code only) |
 | Deployment   | Vercel                                  |
@@ -27,33 +28,41 @@ Zero external UI libraries. Zero paid dependencies. Zero backend.
 ```
 rafly-portfolio/
 ├── app/
-│   ├── layout.tsx          # Root layout: fonts, metadata, viewport
-│   ├── page.tsx            # One page: assembles every section
-│   └── globals.css         # Tailwind + design system utilities
+│   ├── layout.tsx          # Root layout: fonts, metadata, viewport, shared Navbar/Footer
+│   ├── page.tsx             # Homepage: personal branding only, no pricing
+│   ├── globals.css         # Tailwind + design system utilities
+│   └── services/
+│       └── page.tsx        # Freelance pitch: what I build, process, FAQ, no fixed prices
 │
 ├── components/
 │   ├── Reveal.tsx             # Client, framer-motion scroll-reveal primitives (Reveal, RevealGroup, RevealItem)
+│   ├── ExpandPanel.tsx        # Client, shared accordion primitive (project case studies + FAQ)
 │   ├── PixelCorners.tsx      # Client-safe hover accent: 4 corner pixels on interactive cards
 │   ├── MotionProvider.tsx    # Client, LazyMotion wrapper (loads domAnimation only)
-│   ├── Navbar.tsx            # Client, sticky nav, mobile menu
-│   ├── HeroSection.tsx       # Server, headline, CTA
-│   ├── AboutSection.tsx      # Server, bio prose (single column, no duplication)
-│   ├── ServicesSection.tsx   # Server, 4 service packages + pricing
-│   ├── ProjectCard.tsx       # Client, expandable case study card
+│   ├── Navbar.tsx            # Client, route-aware nav (anchors on home, real links elsewhere)
+│   ├── HeroSection.tsx       # Server, headline, CTA (homepage only)
+│   ├── AboutSection.tsx      # Server, bio prose (homepage only)
+│   ├── PhilosophySection.tsx # Server, "How I Think", narrative not a principles list (homepage only)
+│   ├── ServiceCard.tsx       # Server, one package card (scope, not price; /services only)
+│   ├── FaqItem.tsx           # Server wrapper around ExpandPanel (/services only)
+│   ├── ProjectCard.tsx       # Server, expandable case study card (ExpandPanel inside)
 │   ├── CaseStudyFields.tsx   # Shared row definitions (used by ProjectCard + CaseStudySection)
 │   ├── CaseStudySection.tsx  # Server, standalone full case study view
-│   ├── FeaturedProjects.tsx  # Server, grid wrapper for ProjectCard
-│   ├── CybersecuritySection.tsx # Server, dev/sec bridge + write-ups + roadmap
-│   ├── ContactSection.tsx    # Server, WhatsApp CTA + contact
-│   └── Footer.tsx            # Server, nav, socials, copyright
+│   ├── FeaturedProjects.tsx  # Server, grid wrapper for ProjectCard (homepage only)
+│   ├── CybersecuritySection.tsx # Server, dev/sec bridge + write-ups + roadmap (homepage only)
+│   ├── ContactSection.tsx    # Server, four equal-weight contact channels (homepage only)
+│   └── Footer.tsx            # Client, route-aware nav, socials, copyright
 │
 ├── data/
 │   ├── projects.ts         # Typed project data (Project[])
-│   ├── services.ts         # Typed service packages (Service[])
+│   ├── services.ts         # Typed service packages (Service[]), scope not price
 │   └── socialLinks.ts      # Typed social links + URL constants
 │
 ├── lib/
-│   └── utils.ts            # cn(), merge class names
+│   ├── motion.ts           # Motion tokens: easing, duration, spring configs
+│   ├── project-links.ts    # Shared placeholder-URL detection (+ test)
+│   ├── security-status.ts  # Security roadmap status -> label/style (+ test)
+│   └── utils.ts            # cn(), merge class names (+ test)
 │
 ├── types/
 │   └── index.ts            # Shared TypeScript interfaces
@@ -69,6 +78,85 @@ rafly-portfolio/
 ├── tsconfig.json
 └── README.md
 ```
+
+---
+
+## ADR: Splitting Home and Services
+
+**Status:** Active, as of the audience-split redesign.
+
+**Context:** This site serves two audiences with different goals: recruiters and
+engineering leads evaluating Rafly as an engineer, and small business owners
+deciding whether to hire him for freelance website work. Earlier versions put both
+on one scrolling homepage, pricing cards included, between About and Projects.
+
+**Problem:** A recruiter scrolling past four pricing cards to reach the project
+portfolio reads as a small business's website-for-hire, not an engineer's portfolio.
+The two pitches also want different tones: the homepage can be quiet and let the
+work speak; a freelance pitch has to actively make the case and ask for the sale.
+Blending them weakened both.
+
+**Decision:**
+- `/` (homepage) is personal branding only: who I am, what I've built, how I think,
+  why I'm worth trusting, how to reach me. No pricing, no service pitch.
+- `/services` is a separate, deliberately-entered page for the freelance pitch: what
+  I build, how a project starts, FAQ, WhatsApp CTA. One page, not a fragmented
+  `/services/process` + `/services/faq` split, the content is short enough that
+  extra page loads would cost more in friction than they'd gain in separation.
+- Pricing is not published anywhere. `Service.scope` (a qualitative sentence) replaced
+  `Service.price` and `Service.duration` in `types/index.ts`. Every project gets
+  scoped individually over WhatsApp instead.
+- Navbar and Footer are rendered once, in `app/layout.tsx`, and are route-aware:
+  section links resolve to same-page smooth-scroll on `/` and to `/#section`
+  navigation from anywhere else. The "Services" nav item is a real route link, not
+  an anchor, and gets a highlighted active state when already on `/services`. The
+  nav's persistent CTA button also switches: "Discuss Your Website" (WhatsApp) on
+  `/services`, a plain "Contact" (`/#contact`) everywhere else. The audience split
+  is enforced in the shared chrome, not only the page content.
+
+**Trade-off, stated plainly:** removing visible pricing raises the bar to message a
+stranger on WhatsApp. For an established freelancer this is a reasonable trade for
+looking more credible; for someone with zero clients and Rp0 starting capital, it is
+a real cost against conversion, not a free upgrade. Worth revisiting once the first
+few clients are in.
+
+---
+
+## ADR: Homepage Section Order, and When Motion Earns Its Place
+
+**Status:** Active.
+
+**Section order, proof before reflection:** the homepage went through a version
+ordered `Hero → About → Philosophy → Projects → Security → Contact`. That order had
+a real bug: the Philosophy section's evidence lines name specific projects by name
+("Kiroku's roadmap dropped a comment wall...") before the reader has seen Projects
+at all, an unexplained namedrop instead of a callback. Current order is
+`Hero → Projects → Security → Philosophy → About → Contact`: proof first (what got
+built), then the specialized differentiator (Security), then reflection on the
+proof just shown (Philosophy, "How I Think"), then identity (About, kept short and
+positioned as a close rather than an opener since Security already carries the
+build/security angle), then the ask (Contact).
+
+**Motion, one page-load moment, animation only where it signals something real:**
+an earlier pass wrapped almost every section heading in the same scroll-triggered
+fade-and-rise (`<Reveal>`), which is itself a template pattern once it's the
+identical treatment applied to a dozen different headings in a row, motion as
+decoration wearing the appearance of purpose. Current rule, applied throughout:
+
+- Each page gets exactly one sequential stagger (`<RevealGroup>` + `<RevealItem>`
+  on 2-3 elements), its own hero. `HeroSection` on `/`, the H1/sub/CTA block on
+  `/services`. This is the one place a staggered reveal mirrors how a person
+  reads content in order, and it happens once per page, not per section.
+- Grids of parallel items keep `<RevealGroup>` + `<RevealItem>` stagger:
+  the project grid, the three Security grids (dev/sec examples, write-ups,
+  roadmap), the four Contact channels, the service-card grid and FAQ list on
+  `/services`. The stagger there communicates "these are related," which is real
+  information, not decoration.
+- Everything else, standalone section headings and intro paragraphs, single blocks
+  of prose like Philosophy or the current About, renders as a plain `<div>`. No
+  `Reveal` import if a file doesn't need one. If content isn't a page's entry
+  moment and isn't a set of related items, animating it on scroll wasn't
+  communicating anything, it was just the site's default.
 
 ---
 
@@ -100,6 +188,23 @@ npm run dev
 npm run build
 npm run start   # Preview the production build locally
 ```
+
+### 5. Run tests
+
+```bash
+npm test
+```
+
+Covers the pure logic that used to be silently duplicated or untested:
+`cn()`, the placeholder-URL detection shared by `ProjectCard` and
+`CaseStudySection` (`lib/project-links.ts`), the security roadmap's
+status-to-style mapping (`lib/security-status.ts`), and the shape of
+`getCaseStudyFields()`'s output. Deliberately does not test components
+directly, no React Testing Library, no jsdom, everything covered is a
+plain function with a clear input and output. If interactive behavior
+(the mobile menu, the expand/collapse animation) ever needs coverage,
+that is a different, heavier setup, and should stay separate rather
+than making every test file pull in a DOM.
 
 ---
 
@@ -143,9 +248,11 @@ demoUrl: 'https://project-name.vercel.app',
 githubUrl: 'https://github.com/USERNAME/project-name',
 ```
 
-### Update service pricing
+### Update service packages
 
-Edit `data/services.ts`, change the `price` and `deliverables` fields.
+Edit `data/services.ts`, change `scope` and `deliverables`. There is no `price`
+field on purpose (see the ADR above); `scope` is a sentence describing when that
+package fits, not a number.
 
 ### Update social links & WhatsApp number
 
@@ -161,8 +268,9 @@ export const LINKEDIN_URL = 'https://linkedin.com/in/YOUR_USERNAME'
 export const EMAIL        = 'your@email.com'
 ```
 
-Changes in `socialLinks.ts` automatically propagate to every component
-(Navbar, Hero, About, Contact, Footer) since they all import from there.
+Changes in `socialLinks.ts` automatically propagate everywhere they're used
+(Navbar, About, Contact, Footer, `/services`) since every component imports from
+there instead of hardcoding a link.
 
 ---
 
@@ -226,19 +334,24 @@ one-color-one-job rule as `accent`.
 
 ### Fonts
 
-Two pixel fonts, chosen for their respective legibility:
+Two pixel fonts, deliberately unequal in how much of the site they carry:
 
-- **Press Start 2P** (`font-pixel`) — headings (`h1`/`h2`/`h3` pick this up automatically
-  via base layer CSS), buttons, logo. **Never used for body text** since it becomes
-  unreadable below ~12px, and long strings get very wide per character.
-- **VT323** (`font-sans`, default) — all body text, nav, tags, labels. Still reads as
-  distinctly "pixel/terminal" but stays legible at small sizes, unlike Press Start 2P.
-- **Geist Mono** (`font-mono`) — the one exception: used specifically in `<code>` blocks
+- **VT323** (`font-sans`, default): everything, headings included (`h1`/`h2`/`h3` pick
+  this up automatically via base layer CSS, normal case, not uppercase). Reads as
+  pixel/terminal without becoming illegible or shouty at heading scale, which
+  **Press Start 2P did**. That was the actual problem with the original reskin: an
+  8-bit arcade font on every headline reads as a game jam, not an engineer's
+  portfolio, no matter how refined the rest of the system is.
+- **Press Start 2P** (`font-pixel`): reserved for exactly two things now, the "RF"
+  logo mark and the project-card monogram tiles. Both are short, iconic, 2-character
+  marks, the one context where the font's width and unreadability at length don't
+  matter. It is never applied to a sentence.
+- **Geist Mono** (`font-mono`): the one exception, used specifically in `<code>` blocks
   (vulnerability examples in the Security section), because precise monospace alignment
   matters more there than the pixel aesthetic.
 
 Both are loaded via `@fontsource/press-start-2p` and `@fontsource/vt323` (self-hosted
-from npm), **not** `next/font/google` — deliberately, so the build never needs network
+from npm), **not** `next/font/google`. Deliberately, so the build never needs network
 access to `fonts.googleapis.com`. The `--font-press-start` and `--font-vt323` CSS
 variables are defined manually in `globals.css`, pointing at the font-family names those
 packages register.
@@ -261,19 +374,25 @@ individual `text-*` class.
 ### Motion
 
 Scroll-reveal and expand/collapse animation use `framer-motion`, not CSS. The
-components live in `components/Reveal.tsx`:
+components live in `components/Reveal.tsx`. Full reasoning for when each one is
+actually used is in the ADR above ("Homepage Section Order, and When Motion Earns
+Its Place"), short version:
 
-| Component               | Purpose                                              |
-|-------------------------|---------------------------------------------------------|
-| `<Reveal>`              | A single element: fade + rise 10px once, on entering the viewport |
-| `<RevealGroup>` + `<RevealItem>` | Grids/lists: children stagger automatically (no manual per-item delay math) |
+| Component               | Purpose                                              | Used for |
+|--------------------------|---------------------------------------------------------|-------------------------------------------|
+| `<RevealGroup>` + `<RevealItem>` | Children stagger automatically (no manual per-item delay math) | Exactly two things: each page's own hero block (one sequential stagger per page), and grids of genuinely parallel items (projects, Security's three grids, Contact's channels, `/services`'s cards and FAQ) |
+
+There used to be a third component here, a single-element `<Reveal>` for one-off
+fades. It went unused once the rule above became explicit (every remaining case is
+either the one-per-page hero stagger, a real grid, or a plain static block), so it
+was removed rather than kept around "for later." A primitive with zero call sites
+is exactly the kind of thing worth deleting on sight, the same standard applied to
+`ServicesSection.tsx` and `marqueeItems` earlier in this project's history.
 
 Everything respects `prefers-reduced-motion` via `useReducedMotion()`, animation
-becomes instant automatically if the user has that set at the OS level. Used
-deliberately sparingly: scroll reveal, and the height animation on `ProjectCard`'s case
-study expand/collapse. Button/nav/mobile-menu hovers stay plain CSS transitions (with
-`steps()` timing for a "stepped," retro feel instead of a smooth ease), not everything
-moved to JS.
+becomes instant if the user has that set at the OS level. Button/nav/mobile-menu
+hovers stay plain CSS transitions (with `steps()` timing for a "stepped," retro feel
+instead of a smooth ease), not everything moved to JS.
 
 ### Radius & Shadow
 
@@ -289,7 +408,7 @@ Stripe-coded) built earlier, at the explicit request of the project owner, who
 deliberately picked the "full pixel-art reskin" option from a set of more conservative
 alternatives (sharp corners only, a pixel accent on the logo only, etc). If you need to
 go back to the earlier direction, check the git history before this reskin, or ask for
-a manual rebuild — the two systems are different enough that they shouldn't be merged.
+a manual rebuild. The two systems are different enough that they shouldn't be merged.
 
 ---
 
@@ -297,16 +416,23 @@ a manual rebuild — the two systems are different enough that they shouldn't be
 
 ### Server Components (default, zero client JS)
 
-`HeroSection`, `AboutSection`, `ServicesSection`, `FeaturedProjects`,
-`CybersecuritySection`, `ContactSection`, `CaseStudySection`, `Footer`
+`HeroSection`, `AboutSection`, `FeaturedProjects`, `ProjectCard`,
+`CybersecuritySection`, `ContactSection`, `CaseStudySection`, `ServiceCard`,
+`FaqItem`
 
 ### Client Components (`'use client'`)
 
-| Component     | Why it needs to be client                    |
-|---------------|----------------------------------------------|
-| `Reveal`      | `framer-motion` hooks (`useReducedMotion`, `whileInView`) |
-| `Navbar`      | `useState` for scroll state & mobile menu    |
-| `ProjectCard` | `useState` + `framer-motion` for expand/collapse animation |
+| Component      | Why it needs to be client                            |
+|----------------|--------------------------------------------------------|
+| `RevealGroup`/`RevealItem` | `framer-motion` hooks (`useReducedMotion`, `whileInView`) |
+| `ExpandPanel`  | `useState` + `framer-motion` for the shared expand/collapse animation |
+| `Navbar`       | `usePathname`, `useState` for scroll state & mobile menu |
+| `Footer`       | `usePathname`, to resolve anchors correctly off the homepage |
+| `MotionProvider` | `LazyMotion` context provider                        |
+
+Note `ProjectCard` is a Server Component: the actual interactive state lives in
+`ExpandPanel`, which it renders as a child. Keeping the card itself server-rendered
+means the case study text is in the initial HTML, not injected after hydration.
 
 ---
 
@@ -323,18 +449,35 @@ a manual rebuild — the two systems are different enough that they shouldn't be
   category: 'Freelance',       // your choice
   tags: ['Tag1', 'Tag2'],
   stack: ['Next.js', 'TypeScript', 'Tailwind'],
-  problem: 'The problem it solves.',
-  goal: "The project's goal.",
-  role: 'What you worked on.',
-  features: ['Feature 1', 'Feature 2'],
-  challenges: 'Technical challenges you ran into.',
-  result: 'The concrete result.',
+  context: 'What this was and why it existed, one or two sentences.',
+  problem: 'The specific problem, stated concretely. Not "poor UX."',
+  approach: 'How you approached solving it, not just what you wanted to build.',
+  architectureDecisions: [
+    'A specific technical choice and the reasoning behind it: what you picked, and why that over the obvious alternative.',
+    'A second one, if there is one worth mentioning.',
+  ],
+  technicalChallenges: 'The concrete technical difficulty, and how you actually solved it.',
+  tradeoffs: [
+    'What you gave up in exchange for what, stated plainly. If a project has no real trade-off here, that is worth a second look before publishing it.',
+  ],
+  outcome: 'The concrete, checkable result.',
+  lessonsLearned: 'What you would do differently, or what surprised you. Not a victory lap.',
+  ifRebuiltToday: 'One specific, concrete thing that would be different if started today. Not "I would use better practices," name a real alternative.',
   demoUrl: 'https://demo.vercel.app',
   githubUrl: 'https://github.com/USERNAME/project-name',
 },
 ```
 
 3. Save. The component renders it automatically, no other changes needed.
+
+This structure (`Context → Problem → Approach → Architecture Decisions → Technical
+Challenges → Trade-offs → Outcome → Lessons Learned → If I Rebuilt It Today`)
+replaced an earlier `Overview / Features / Tech Stack` shape on purpose: that
+structure showed what got built, this one shows the thinking behind it.
+`architectureDecisions` and `tradeoffs` are arrays, not paragraphs, because they
+are meant to be a short list of distinct, specific points, not one long
+explanation. If you cannot fill `tradeoffs` with something real, the project might
+not be ready to publish yet, every real technical decision costs something.
 
 ---
 

@@ -1,57 +1,57 @@
+import Link from 'next/link'
 import { ExternalLink } from 'lucide-react'
 import { GITHUB_URL, LINKEDIN_URL } from '@/data/socialLinks'
-import { RevealGroup, RevealItem } from '@/components/Reveal'
 
 /**
- * Single column, prose only. The previous version said "ITERA", "security
- * learning", and the tech stack three times each across a bio, a highlights
- * list, and a sidebar card. That's one piece of information wearing three
- * costumes. This says each thing once.
+ * Single column, prose only. Sits near the end of the homepage now
+ * (Projects and Security carry the proof, Philosophy carries the
+ * reflection), so this doesn't need to re-introduce the build/security
+ * angle a third time, just close out who's behind it.
+ *
+ * No scroll-reveal wrapper: this used the same 3-block sequential stagger
+ * as Hero, which was fine used once, but repeated across sections it's
+ * the same decorative pattern the fade-up critique is about. Hero keeps
+ * its stagger as the one page-load moment; everything scrolled to after
+ * that renders as it is.
  */
 export default function AboutSection() {
   return (
     <section id="about" aria-labelledby="about-heading" className="section-pad">
       <div className="max-w-content mx-auto px-5 sm:px-8">
-        <RevealGroup className="max-w-2xl">
+        <div className="max-w-2xl">
 
-          <RevealItem>
-            <h2
-              id="about-heading"
-              className="text-base sm:text-lg text-zinc-50 leading-[1.8] mb-8"
-            >
-              Not a generic developer. <span className="text-accent-text">I have a point of view.</span>
-            </h2>
-          </RevealItem>
+          <h2
+            id="about-heading"
+            className="text-2xl sm:text-3xl text-paper leading-[1.15] mb-8"
+          >
+            A bit more about me.
+          </h2>
 
-          <RevealItem className="space-y-4 text-zinc-400 leading-relaxed text-lg">
+          <div className="space-y-4 text-paper/60 leading-relaxed text-lg">
             <p>
-              I&apos;m <strong className="text-zinc-50 font-normal">Muhammad Rafly Yahya Ramadhan</strong>,
+              I&apos;m <strong className="text-paper font-normal">Muhammad Rafly Yahya Ramadhan</strong>,
               known as Rafly. Computer Science student at Institut Teknologi Sumatera
               (ITERA), based in Lampung, Indonesia.
             </p>
             <p>
-              I build websites with React, Next.js, and TypeScript. A good-looking site
-              isn&apos;t enough on its own: visitors need to understand what you do
-              within the first five seconds, and trust your business enough to reach out,
-              buy, or come back.
+              I build with React, Next.js, and TypeScript. The parts I spend the most
+              time on are the ones that are easy to skip: loading states, error
+              handling, what happens on a slow connection. The birthday website&apos;s
+              photo gallery is where I got this wrong. It never loaded well on a slow
+              connection, which is the first thing I would fix if I rebuilt it.
             </p>
             <p>
-              I also study web security actively, because code written without
-              considering how it could be attacked is just a bug waiting for its moment.
-              More on that in the{' '}
-              <a href="#security" className="text-accent-text hover:underline">
-                Security
-              </a>{' '}
-              section.
+              I&apos;m currently open to <strong className="text-paper font-normal">internship and junior engineering roles</strong>.
+              Looking to hire for freelance website work instead? That&apos;s a
+              separate conversation: see{' '}
+              <Link href="/services" className="text-accent-text hover:underline">
+                Services
+              </Link>
+              .
             </p>
-            <p>
-              Right now, <strong className="text-zinc-50 font-normal">I&apos;m taking on website projects</strong>: small
-              business sites, landing pages, and company profiles, at prices that make
-              sense for a first client in Indonesia.
-            </p>
-          </RevealItem>
+          </div>
 
-          <RevealItem className="flex flex-wrap gap-3 mt-8">
+          <div className="flex flex-wrap gap-3 mt-8">
             <a
               href={GITHUB_URL}
               target="_blank"
@@ -68,9 +68,9 @@ export default function AboutSection() {
             >
               <ExternalLink size={14} aria-hidden="true" /> LinkedIn
             </a>
-          </RevealItem>
+          </div>
 
-        </RevealGroup>
+        </div>
       </div>
     </section>
   )
