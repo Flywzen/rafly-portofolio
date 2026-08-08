@@ -61,25 +61,18 @@ export default function IntroCrawl() {
       })
     }
 
-    const crawlState = { y: 115 }
-    const applyCrawlTransform = () => {
-      if (crawlRef.current) {
-        crawlRef.current.style.transform = `translateY(${crawlState.y}%) rotateX(28deg)`
-      }
-    }
-    applyCrawlTransform()
-
     const timeline = anime.timeline({ autoplay: true, complete: finish })
     timeline
       .add({ targets: prologueRef.current, opacity: [0, 1], duration: 1100, easing: EASE_OUT })
       .add({ targets: prologueRef.current, opacity: 1, duration: 1600 })
       .add({ targets: prologueRef.current, opacity: [1, 0], duration: 800, easing: EASE_OUT })
       .add({
-        targets: crawlState,
-        y: -640,
+        targets: crawlRef.current,
+        translateY: ['85%', '-300%'],
+        translateZ: [0, -900],
+        rotateX: 24,
         duration: CRAWL_DURATION,
         easing: 'linear',
-        update: applyCrawlTransform,
       })
 
     return () => {
@@ -121,16 +114,28 @@ export default function IntroCrawl() {
         aria-hidden="true"
         className="absolute inset-0"
         style={{
-          perspective: '340px',
+          perspective: '500px',
           perspectiveOrigin: '50% 100%',
           maskImage: 'linear-gradient(to top, black 55%, transparent 92%)',
           WebkitMaskImage: 'linear-gradient(to top, black 55%, transparent 92%)',
         }}
       >
+        {/*
+          One element, three transform channels animated together:
+          rotateX (constant tilt), translateY (rises up-screen), translateZ
+          (recedes from the camera). Genuine perspective shrink needs
+          translateZ specifically — a flat translateY-only slide inside a
+          statically-tilted trapezoid just moves through a fixed shape, it
+          never actually gets smaller. translateZ is what changes an
+          element's real distance from the `perspective` camera set on the
+          ancestor above, which is what CSS uses to compute the shrink.
+          Centering is still done with left/right/mx-auto (layout, not
+          transform) so animating `transform` here can never disturb it.
+        */}
         <div
           ref={crawlRef}
-          className="absolute left-1/2 bottom-0 w-[86%] max-w-xl -translate-x-1/2 text-center font-display font-semibold text-accent leading-relaxed"
-          style={{ transformOrigin: '50% 100%' }}
+          className="absolute left-0 right-0 bottom-0 mx-auto w-[86%] max-w-xl text-center font-display font-semibold text-accent leading-relaxed"
+          style={{ transform: 'translateY(85%) translateZ(0px) rotateX(24deg)', transformOrigin: '50% 100%' }}
         >
           <p className="text-xl sm:text-2xl mb-8">EPISODE &infin; &mdash; STILL SHIPPING</p>
           <p className="text-base sm:text-lg mb-8">
