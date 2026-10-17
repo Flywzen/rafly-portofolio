@@ -1,4 +1,5 @@
 import HeroSection from '@/components/HeroSection'
+import InteractiveTerminal from '@/components/InteractiveTerminal'
 import FeaturedProjects from '@/components/FeaturedProjects'
 import PhilosophySection from '@/components/PhilosophySection'
 import AboutSection from '@/components/AboutSection'
@@ -20,6 +21,7 @@ export default function Home() {
   return (
     <>
       <HeroSection />
+      <InteractiveTerminal />
       <FeaturedProjects />
       <PhilosophySection />
       <AboutSection />
