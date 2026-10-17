@@ -8,6 +8,7 @@ import { GeistMono } from 'geist/font/mono'
 import BackgroundSystem from '@/components/BackgroundSystem'
 import CustomCursor from '@/components/CustomCursor'
 import IntroCrawl from '@/components/IntroCrawl'
+import IntroDoor from '@/components/IntroDoor'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import './globals.css'
@@ -57,6 +58,7 @@ export default function RootLayout({
     <html lang="en" className={GeistMono.variable}>
       <body className="bg-ink text-paper font-sans antialiased">
         <IntroCrawl />
+        <IntroDoor />
         <CustomCursor />
         <BackgroundSystem />
         <Navbar />

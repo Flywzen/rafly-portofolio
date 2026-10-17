@@ -61,6 +61,7 @@ export function RevealGroup({ children, className, stagger = 0.08 }: RevealGroup
           targets,
           opacity: [0, 1],
           translateY: [REVEAL_DISTANCE, 0],
+          scale: [0.95, 1],
           duration: DURATION.slow,
           delay: anime.stagger(stagger * 1000),
         })
@@ -97,7 +98,7 @@ export function RevealItem({ children, className }: { children: React.ReactNode;
   }, [ctx])
 
   return (
-    <div ref={ref} className={className} style={{ opacity: 0, transform: `translateY(${REVEAL_DISTANCE}px)` }}>
+    <div ref={ref} className={className} style={{ opacity: 0, transform: `translateY(${REVEAL_DISTANCE}px) scale(0.95)` }}>
       {children}
     </div>
   )

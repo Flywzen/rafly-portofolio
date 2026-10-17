@@ -1,0 +1,13 @@
+
+> rafly-portfolio@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 1939ms
+ ○ Compiling / ...
+ ✓ Compiled / in 7.8s (774 modules)
+ GET / 200 in 8535ms
+ GET / 200 in 134ms
